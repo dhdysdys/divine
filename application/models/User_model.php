@@ -25,7 +25,7 @@
         public function get_user_without_admin(){
             $this->db->from('dataUser');
             $this->db->select('*');
-            $this->db->where('namaUser != "admin"');
+            $this->db->where("namaUser NOT LIKE 'admin'");
             $query = $this->db->get();
 
             return $query->result();
