@@ -36,15 +36,21 @@
                             <?php if($data){ ?>
                                 <?php for($i =0; $i < count($data);$i++){ ?>
                                     <tr>
-                                        <td class="text-center"><?= $data[$i]->kodePengajuan ?></td>
+                                        <td class="text-center"><?= $data[$i]->kodeAlat ?></td>
                                         <td ><?= $data[$i]->namaAlat ?></td>
-                                        <td class="text-center"><?= $data[$i]->hargaAlat ?></td>
+                                        <td class="text-center">Rp. <?= $data[$i]->hargaAlat ?></td>
                                         <td><?= $data[$i]->alasan ?></td>
                                         <td class="text-center">
                                             <?php if($data[$i]->status == 0){ ?>
-                                                <a href="<?php echo base_url('inventaris/alat/input_alat/'.$data[$i]->kodePengajuan); ?>" class="btn btn-success">Accept</a>
-                                                <a onclick="return confirm(' Apakah anda yakin untuk menghapus data?')" href="<?php echo base_url('inventaris/alat/delete/'.$data[$i]->kodePengajuan); ?>" class="btn btn-danger">Reject</a>
-                                            <?php } ?>
+                                                <a href="<?php echo base_url('pimpinan/alat_masuk/accept/'.$data[$i]->kodeAlat); ?>" class="btn btn-success">Accept</a>
+                                                <a  href="<?php echo base_url('pimpinan/alat_masuk/reject/'.$data[$i]->kodeAlat); ?>" class="btn btn-danger">Reject</a>
+                                            <?php }else{ ?>
+                                                <?php if($data[$i]->status == 1){?> 
+                                                    <p style="color:green;font-weight:bold;">Accepted</p>
+                                                <?php }else{ ?>   
+                                                    <p style="color:red;font-weight:bold;">Rejected</p>
+                                                <?php } ?>       
+                                            <?php } ?>     
                                         </td>
                                     </tr>
                                 <?php } ?>        

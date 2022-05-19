@@ -3,7 +3,7 @@
         <div class="nav">
             <center>
             <div class="sb-sidenav-menu-heading" style="margin-top:80px;">
-                <a href="<?php echo base_url('admin/dashboard'); ?>">
+                <a href="<?php echo base_url('/dashboard'); ?>">
                     <img width="350"  height="100" src="<?php echo base_url('public/assets/img/putih.png'); ?>">
                 </a>
                 

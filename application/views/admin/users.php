@@ -46,7 +46,7 @@
                                         <td class="text-center"><?= $data[$i]->registerDate ?> </td>
                                         <td class="text-center">
                                             <!-- <button class="data" data-toggle="modal" data-target="#confirmationModal" data-id="<?= $data[$i]->kodeAdmin?>" data-dismiss="modal">Delete</button> -->
-                                            <a  onclick="return confirm(' Apakah anda yakin untuk menghapus data?')" href="<?php echo base_url('admin/user/delete/'.$data[$i]->kodeAdmin); ?>" class="btn btn-secondary">Delete</a>
+                                            <a  onclick="return confirm(' Apakah anda yakin untuk menghapus data?')" href="<?php echo base_url('admin/user/delete/'.$data[$i]->kodeAdmin); ?>" class="btn btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                 <?php } ?>        

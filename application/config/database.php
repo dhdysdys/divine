@@ -75,11 +75,11 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '127.0.0.1',
-	'username' => 'root', // username sql authentication
-	'password' => '1234567890', //password sql authentication
-	'database' => 'project_event', //nama db
-	'dbdriver' => 'sqlsrv', //driver sql server php
+	'hostname' => 'localhost',
+	'username' => 'root',
+	'password' => '123456789',
+	'database' => 'divine',
+	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' =>  (ENVIRONMENT !== 'production'),

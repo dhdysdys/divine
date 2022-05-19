@@ -17,11 +17,8 @@
                     <?php echo form_open('inventaris/alat/pengajuan_submit'); ?> 
                     <div class="form-group">
                         <label for="namaAlat"><b>Nama Alat</b></label>
-                        <select name="kodeAlat" id="kodeAlat" class="form-control col-5">
-                            <?php for($i=0;$i < count($alat);$i++){ ?>
-                               <option value="<?= $alat[$i]->kodeAlat?>"><?= $alat[$i]->namaAlat?></option>
-                            <?php } ?>
-                        </select>
+                        <input type="text" class="form-control col-5" name="namaAlat" id="namaAlat" autocomplete="off">
+                        <?php echo form_error('namaAlat'); ?>
                     </div>
                     <div class="form-group">
                         <label for="hargaAlat"><b>Harga Alat</b></label>

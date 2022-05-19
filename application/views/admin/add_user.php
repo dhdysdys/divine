@@ -45,8 +45,8 @@
                         <?php echo form_error('role'); ?>
                     </div>
                     <br>
-                    <button type="submit" name= "submit" id="save" class="btn btn-secondary"><b>Save</b></button> 
-                    <a type="button" href="<?php echo base_url('admin/user'); ?>" class="btn btn-secondary"> <b>Cancel</b></a>
+                    <button type="submit" name= "submit" id="save" class="btn btn-success"><b>Save</b></button> 
+                    <a type="button" href="<?php echo base_url('admin/user'); ?>" class="btn btn-danger"> <b>Cancel</b></a>
 
                     <?php if($this->session->flashdata('add_user_error')) echo $this->session->flashdata('add_user_error'); ?>
                     <?php form_close(); ?>

@@ -6,27 +6,25 @@
         }
 
         public function get_list(){
-            $this->db->from('dataPengajuanAlat dp');
-            $this->db->select('dp.kodePengajuan, da.namaAlat, dp.hargaAlat, dp.status, dp.alasan');
-            $this->db->join('dataAlat da', 'da.kodeAlat = dp.kodeAlat');
+            $this->db->from('dataAlatBaru');
+            $this->db->select('*');
             $query = $this->db->get();
 
             return $query->result();
         }
 
         public function get($id=null){
-            if(!empty($id)) $this->db->where('dp.kodePengajuan', $id);
-            $$this->db->from('dataPengajuanAlat dp');
-            $this->db->select('dp.kodePengajuan, da.kodeAlat, da.namaAlat, dp.hargaAlat, dp.status, dp.alasan');
-            $this->db->join('dataAlat da', 'da.kodeAlat = dp.kodeAlat');
+            if(!empty($id)) $this->db->where('kodeAlat', $id);
+            $this->db->from('dataAlatBaru');
+            $this->db->select('*');
             $query = $this->db->get();
 
             return $query->result();
         }
 
-        public function check_alat($kodeAlat=null){
-            if(!empty($kodeAlat)) $this->db->where('kodeAlat', $kodeAlat);
-            $this->db->from('dataPengajuanAlat');
+        public function check_alat($namaAlat=null){
+            if(!empty($kodeAlat)) $this->db->where('namaAlat', $namaAlat);
+            $this->db->from('dataAlatBaru');
             $this->db->select('*');
             $query = $this->db->get();
 
@@ -34,16 +32,16 @@
         }
 
         public function add_pengajuan($data){
-            $this->db->insert('dataPengajuanAlat', $data);
+            $this->db->insert('dataAlatBaru', $data);
         }
 
         public function edit_pengajuan($data,$id){
-            $this->db->where('kodePengajuan', $id);
-            $this->db->update('dataPengajuanAlat', $data);
+            $this->db->where('kodeAlat', $id);
+            $this->db->update('dataAlatBaru', $data);
         }
 
         public function delete_pengajuan($id){
-            $this->db->where('kodePengajuan', $id);
-            $this->db->delete('dataPengajuanAlat');
+            $this->db->where('kodeAlat', $id);
+            $this->db->delete('dataAlatBaru');
         }
     }

@@ -42,7 +42,7 @@ class Alat extends CI_Controller {
 			redirect("auth");
 		}else{
 			$data = null;
-			$array_status = array(1,2);
+			$array_status = array(1,2,3);
 			$data["status_alat"] = $array_status;
 			if($id != null){
 				$data['data_alat']=$this->inventaris_model->get($id);
@@ -60,7 +60,9 @@ class Alat extends CI_Controller {
 		$this->form_validation->set_rules('hargaRetail', 'Harga Retail', 'required|numeric');
       
 		if($this->form_validation->run() == FALSE){
-            $this->load->view('inventaris/input_alat');
+			$array_status = array(1,2,3);
+			$data["status_alat"] = $array_status;
+            $this->load->view('inventaris/input_alat', $data);
         }else{
 			$kodeAlat = $this->input->post("kodeAlat");
 			$namaAlat = $this->input->post("namaAlat");
@@ -112,57 +114,35 @@ class Alat extends CI_Controller {
 		if(!$this->session->userdata('email')){
 			redirect("auth");
 		}else{
-			$data = null;
-			$data["alat"] = $this->inventaris_model->get();
-			$this->load->view('inventaris/pengajuan_alat', $data);
+			$this->load->view('inventaris/pengajuan_alat');
 		}
 	}
 
 	public function pengajuan_submit(){
-		$this->form_validation->set_rules('kodeAlat', 'Nama Alat', 'required');
+		$this->form_validation->set_rules('namaAlat', 'Nama Alat', 'required');
         $this->form_validation->set_rules('hargaAlat', 'Harga Alat', 'required|numeric');
 		$this->form_validation->set_rules('alasan', 'Alasan Pengajuan', 'required');
 
 		if($this->form_validation->run() == FALSE){
-            $this->load->view('inventaris/input_alat');
+			$this->load->view('inventaris/pengajuan_alat');
         }else{
-			$kodeAlat = $this->input->post("kodeAlat");
+			$namaAlat = $this->input->post("namaAlat");
 			$hargaAlat = $this->input->post("hargaAlat");
 			$alasan = $this->input->post("alasan");
 
-			$check_kode_alat = $this->pengajuan_alat_model->check_alat($kodeAlat);
+			$check_alat = $this->pengajuan_alat_model->check_alat($namaAlat);
 		
-			if($check_kode_alat){
-				//data alat ada + check statusnya dulu
-				if($check_kode_alat[0]->status == 0){
-					//data lagi diajukan
-					$this->session->set_flashdata('error', 'Alat yang diajukan sedang menunggu approval!');
-					redirect('inventaris/alat');
-				}else{
-					//data udah diapprove reject sebelumnya
-					$array_insert = array(
-						"kodeAlat" => $kodeAlat,
-						"hargaAlat" => $hargaAlat,
-						"alasan" => $alasan,
-						"status" => 0
-					); 
+			$array_insert = array(
+				"namaAlat" => $namaAlat,
+				"hargaAlat" => $hargaAlat,
+				"alasan" => $alasan,
+				"status" => 0
+			); 
 
-					$this->pengajuan_alat_model->add_pengajuan($array_insert);
-					$this->session->set_flashdata('success', 'Sukses mengajukan alat baru!');
-				}
-			}else{
-				//data alat belom ada di list pengajuan
-				$array_insert = array(
-					"kodeAlat" => $kodeAlat,
-					"hargaAlat" => $hargaAlat,
-					"alasan" => $alasan,
-					"status" => 0
-				); 
-
-				$this->pengajuan_alat_model->add_pengajuan($array_insert);
-				$this->session->set_flashdata('success', 'Sukses mengajukan alat baru!');
-			}
+			$this->pengajuan_alat_model->add_pengajuan($array_insert);
+			$this->session->set_flashdata('success', 'Sukses mengajukan alat baru!');
+			redirect("inventaris/alat");
 		}
-		redirect("inventaris/alat");
+	
 	}
 }

@@ -31,7 +31,9 @@
                         <select name="statusAlat" id="statusAlat" class="form-control col-5">
                             <?php for($i=0;$i < count($status_alat);$i++){ ?>
                                 <option value="<?= $status_alat[$i]?>" <?= isset($data_alat) && $data_alat[0]->statusAlat == $status_alat[$i]?" selected":"" ?> > 
-                                    <?= $status_alat[$i] === 1?"Available":"Rusak"?>
+                                    <?php if($status_alat[$i] == 1) echo "Available";?>
+                                    <?php if($status_alat[$i] == 2) echo "Not Available";?>
+                                    <?php if($status_alat[$i] == 3) echo "Rusak";?>
                                 </option>
                             <?php } ?>
                         </select>
@@ -48,8 +50,8 @@
                         <?php echo form_error('hargaRetail'); ?>
                     </div>
                     <br>
-                    <button type="submit" name= "submit" id="save" class="btn btn-secondary"><b>Save</b></button> 
-                    <a type="button" href="<?php echo base_url('inventaris/alat'); ?>" class="btn btn-secondary"> <b>Cancel</b></a>
+                    <button type="submit" name= "submit" id="save" class="btn btn-primary"><b>Save</b></button> 
+                    <a type="button" href="<?php echo base_url('inventaris/alat'); ?>" class="btn btn-danger"> <b>Cancel</b></a>
 
                     <?php if($this->session->flashdata('add_alat_error')) echo $this->session->flashdata('add_alat_error'); ?>
                     <?php form_close(); ?>

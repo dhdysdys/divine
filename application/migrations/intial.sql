@@ -21,9 +21,9 @@ CREATE TABLE dataAlat (
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
 );
 
-CREATE TABLE dataPengajuanAlat ( 
-    kodePengajuan INT NOT NULL IDENTITY PRIMARY KEY , 
-    kodeAlat INT NOT NULL FOREIGN KEY REFERENCES dataAlat(kodeAlat), 
+CREATE TABLE dataAlatBaru ( 
+    kodeAlat INT NOT NULL IDENTITY PRIMARY KEY , 
+    namaAlat VARCHAR(255) NOT NULL, 
     hargaAlat INT NOT NULL,
     status INT NOT NULL , 
     alasan TEXT NOT NULL,

@@ -42,11 +42,13 @@
                                         <?php if($data[$i]->statusAlat == 1){ ?>
                                             <td class="text-center">Available</td>
                                         <?php }else if($data[$i]->statusAlat == 2){ ?>
+                                            <td class="text-center">Not Available</td>
+                                        <?php }else if($data[$i]->statusAlat == 3){?> 
                                             <td class="text-center">Rusak</td>
-                                        <?php }?>     
+                                        <?php } ?>   
                                         <td class="text-center">
                                             <a href="<?php echo base_url('inventaris/alat/input_alat/'.$data[$i]->kodeAlat); ?>" class="btn btn-secondary">Edit</a>
-                                            <a onclick="return confirm(' Apakah anda yakin untuk menghapus data?')" href="<?php echo base_url('inventaris/alat/delete/'.$data[$i]->kodeAlat); ?>" class="btn btn-secondary">Delete</a>
+                                            <a onclick="return confirm(' Apakah anda yakin untuk menghapus data?')" href="<?php echo base_url('inventaris/alat/delete/'.$data[$i]->kodeAlat); ?>" class="btn btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                 <?php } ?>        
