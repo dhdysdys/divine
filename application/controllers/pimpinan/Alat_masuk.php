@@ -48,11 +48,37 @@ class Alat_masuk extends CI_Controller {
 
 			$this->pengajuan_alat_model->edit_pengajuan($data, $id);
 
+			$array_insert = array(
+				"namaAlat" => $detail[0]->namaAlat,
+				"tanggalAlatMasuk" => date("Y-m-d"),
+				"statusAlat" => 1,
+				"hargaAlat" => $detail[0]->hargaAlat,
+			);
+
+			$this->inventaris_model->add_alat($array_insert);
+
 			$this->session->set_flashdata('success',  'Alat '.$detail[0]->namaAlat.'telah diaccept!');
             redirect('pimpinan/alat_masuk');
 		}else{
 			$this->session->set_flashdata('error', "Accept alat error!");
             redirect('pimpinan/alat_masuk');
+		}
+	}
+
+	public function reject(){
+		$id = $this->input->post("id");
+		$alasan = $this->input->post("alasan");
+
+		if($id != NULL){
+			$array_update = array(
+				"alasanReject" => $alasan,
+				"status" => 2
+			);
+
+			$this->pengajuan_alat_model->edit_pengajuan($array_update, $id);
+			echo "success";
+		}else{
+			echo "failed";
 		}
 	}
 }

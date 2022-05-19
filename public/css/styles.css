@@ -6538,12 +6538,6 @@ textarea.form-control-lg {
   left: 0;
 }
 
-#layoutSidenav_nav{
-  background: url("../../public/assets/img/camera2.png") repeat-y ;
-  position: fixed !important;
-  width: 420px !important;
-}
-
 .fixed-bottom {
   position: fixed;
   right: 0;

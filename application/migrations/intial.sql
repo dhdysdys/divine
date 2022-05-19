@@ -1,4 +1,4 @@
-USE project_event
+USE divine
 
 CREATE TABLE dataUser ( 
     kodeAdmin INT NOT NULL IDENTITY PRIMARY KEY, 
@@ -17,7 +17,7 @@ CREATE TABLE dataAlat (
     tanggalAlatMasuk DATE NOT NULL,
     statusAlat INT NOT NULL , 
     hargaAlat INT NOT NULL,
-    hargaRetail INT NOT NULL,
+    hargaRetail INT DEFAULT 0,
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
 );
 
@@ -27,5 +27,6 @@ CREATE TABLE dataAlatBaru (
     hargaAlat INT NOT NULL,
     status INT NOT NULL , 
     alasan TEXT NOT NULL,
+    alasanReject TEXT DEFAULT NULL,
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
 );

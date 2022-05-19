@@ -43,12 +43,14 @@
                                         <td class="text-center">
                                             <?php if($data[$i]->status == 0){ ?>
                                                 <a href="<?php echo base_url('pimpinan/alat_masuk/accept/'.$data[$i]->kodeAlat); ?>" class="btn btn-success">Accept</a>
-                                                <a  href="<?php echo base_url('pimpinan/alat_masuk/reject/'.$data[$i]->kodeAlat); ?>" class="btn btn-danger">Reject</a>
+                                                <a  id="rejectBtn" data-toggle="modal" data-target="#rejectModal" data-id="<?= $data[$i]->kodeAlat?>" class="btn btn-danger data">Reject</a>
                                             <?php }else{ ?>
                                                 <?php if($data[$i]->status == 1){?> 
-                                                    <p style="color:green;font-weight:bold;">Accepted</p>
+                                                    <p style="color:green;font-weight:bold;font-size:1rem;">Accepted</p>
                                                 <?php }else{ ?>   
-                                                    <p style="color:red;font-weight:bold;">Rejected</p>
+                                                    <button class="btn btn-danger dataNote" data-toggle="modal" data-target="#noteModal" data-note="<?= isset($data)?$data[$i]->alasanReject:""?>"  style="color:black;font-weight:bold;">
+                                                    Rejected
+                                                    </button>
                                                 <?php } ?>       
                                             <?php } ?>     
                                         </td>
@@ -61,10 +63,88 @@
             </main>
         </div>
     </div>
+
+    <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="ModalBobot" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalReject"><b>Reject Note</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="kodeAlat" id="kodeAlat">
+                    <div class="form-group">
+                        <label for="inputBobot" class="col-sm-6 col-form-label">Alasan reject alat</label>
+                        <div class="col-sm-12">
+                            <textarea name="alasan" id="alasan" cols="30" rows="3" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="ModalBobot" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalReject"><b>Reject Note</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputBobot" class="col-sm-6 col-form-label">Alasan reject alat</label>
+                        <div class="col-sm-12">
+                            <textarea name="alasanNote" id="alasanNote" cols="30" rows="3" class="form-control" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <?php $this->load->view('layout/script_list') ; ?>
 <script type="text/javascript">
     $(document).ready( function () {
         $('#tb_alat').DataTable();
+
+        $("#btn-submit").on("click", function(){
+            reject()
+        })
+
+        $(".data").on("click", function(e){
+            const dataEl = e.target;
+            $("#kodeAlat").val(dataEl.dataset.id)
+        })
+
+        $(".dataNote").on("click", function(e){
+            const dataEl = e.target;
+            $("#alasanNote").val(dataEl.dataset.note)
+        })
+        
     } );
+
+    function reject(){
+        $.ajax({
+            "type": "POST",
+            "url": "<?=base_url()?>pimpinan/alat_masuk/reject",
+            "data": {
+                "id": $("#kodeAlat").val(),
+                "alasan": $('#alasan').val()
+            }
+        }).done(function (res) {
+            console.log(res)
+            if(res == "success"){
+                alert("Berhasil reject request!")
+                window.location.href = "<?=base_url()?>pimpinan/alat_masuk"; 
+            }else if(res == "failed"){
+                alert("Gagal reject request!")
+                window.location.href = "<?=base_url()?>pimpinan/alat_masuk"; 
+            }
+        })
+    }
 </script>
