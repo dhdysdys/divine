@@ -81,6 +81,13 @@
                             <textarea name="alasan" id="alasan" cols="30" rows="3" class="form-control"></textarea>
                         </div>
                     </div>
+
+                    <div class="button-group">
+                        <center>
+                        <button type="submit" id="btn-submit" class="btn btn-danger">Reject</button>
+                        <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </center>
+                    </div>
                 </div>
             </div>
         </div>
