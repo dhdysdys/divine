@@ -31,6 +31,15 @@
             return $query->result();
         }
 
+        public function get_reject_note($namaAlat){
+            $this->db->where('status = 2 AND namaAlat LIKE "'.$namaAlat.'"');
+            $this->db->from('dataAlatBaru');
+            $this->db->select('*');
+            $query = $this->db->get();
+
+            return $query->result();
+        }
+
         public function add_pengajuan($data){
             $this->db->insert('dataAlatBaru', $data);
         }

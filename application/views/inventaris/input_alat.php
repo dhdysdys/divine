@@ -31,9 +31,10 @@
                         <select name="statusAlat" id="statusAlat" class="form-control col-5">
                             <?php for($i=0;$i < count($status_alat);$i++){ ?>
                                 <option value="<?= $status_alat[$i]?>" <?= isset($data_alat) && $data_alat[0]->statusAlat == $status_alat[$i]?" selected":"" ?> > 
-                                    <?php if($status_alat[$i] == 1) echo "Available";?>
+                                    <?php if($status_alat[$i] == 1) echo "Accepted";?>
                                     <?php if($status_alat[$i] == 2) echo "Not Available";?>
-                                    <?php if($status_alat[$i] == 3) echo "Rusak";?>
+                                    <?php if($status_alat[$i] == 3) echo "Available";?>
+                                    <?php if($status_alat[$i] == 4) echo "Rusak";?>
                                 </option>
                             <?php } ?>
                         </select>

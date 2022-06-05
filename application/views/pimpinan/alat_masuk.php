@@ -22,7 +22,7 @@
                         <div class="alert alert-danger"> <?= $this->session->flashdata('error') ?> </div><br>
                     <?php } ?>
                     <br>
-                    <table id="tb_alat" class="table table-secondary" style="width:100%; font-size:22px;">
+                    <table id="tb_alat" class="table table-secondary" style="width:100%;">
                         <thead>
                             <tr>
                                 <th class="text-center" width="50">ID</th>
@@ -138,7 +138,7 @@
     function reject(){
         $.ajax({
             "type": "POST",
-            "url": "<?=base_url()?>pimpinan/alat_masuk/reject",
+            "url": "http://localhost/divine/pimpinan/alat_masuk/reject",
             "data": {
                 "id": $("#kodeAlat").val(),
                 "alasan": $('#alasan').val()
@@ -147,10 +147,10 @@
             console.log(res)
             if(res == "success"){
                 alert("Berhasil reject request!")
-                window.location.href = "<?=base_url()?>pimpinan/alat_masuk"; 
+                window.location.href = "http://localhost/divine/pimpinan/alat_masuk"; 
             }else if(res == "failed"){
                 alert("Gagal reject request!")
-                window.location.href = "<?=base_url()?>pimpinan/alat_masuk"; 
+                window.location.href = "http://localhost/divine/pimpinan/alat_masuk"; 
             }
         })
     }

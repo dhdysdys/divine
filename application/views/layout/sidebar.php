@@ -32,20 +32,33 @@
                 <a class="nav-link" href="<?php echo base_url('pimpinan/alat_masuk'); ?>" style="font-size:20px;margin-top:50px;color:white;background-color: rgba(0,0,0,.5)">
                     <b>ALAT MASUK</b>
                 </a>
-                <a class="nav-link" href="<?php echo base_url('pimpinan/alat/input_alat'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
+                <a class="nav-link" href="<?php echo base_url('pimpinan/event_masuk'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
                     <b>EVENT MASUK</b>
                 </a>
                 <a class="nav-link" href="<?php echo base_url('pimpinan/alat/pengajuan_alat'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
                     <b>SCHEDULE EVENT</b>
                 </a>
-                <a class="nav-link" href="<?php echo base_url('pimpinan/alat/pengajuan_alat'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
+                <a class="nav-link" href="<?php echo base_url('pimpinan/alat'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
                     <b>INVENTARIS ALAT</b>
                 </a>
+                <!-- <a class="nav-link" href="#" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
+                    <b>INVENTARIS ALAT</b>
+                </a> -->
                 <a class="nav-link" href="<?php echo base_url('pimpinan/alat/pengajuan_alat'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
                     <b>ALAT TAMBAHAN MASUK</b>
                 </a>
                 <a class="nav-link" href="<?php echo base_url('pimpinan/alat/pengajuan_alat'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
                     <b>REPORT</b>
+                </a>
+            <?php }else if($this->session->userdata('role') == 3){ ?>
+                <a class="nav-link" href="<?php echo base_url('event/add_event'); ?>" style="font-size:20px;margin-top:50px;color:white;background-color: rgba(0,0,0,.5)">
+                    <b>ADD EVENT</b>
+                </a>
+                <a class="nav-link" href="<?php echo base_url('event/alat'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
+                    <b>PENGAJUAN ALAT TAMBAHAN</b>
+                </a>
+                <a class="nav-link" href="<?php echo base_url('event/schedule_event'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
+                    <b>SCHEDULE EVENT</b>
                 </a>
             <?php } ?>
         

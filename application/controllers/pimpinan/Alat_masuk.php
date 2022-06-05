@@ -57,7 +57,7 @@ class Alat_masuk extends CI_Controller {
 
 			$this->inventaris_model->add_alat($array_insert);
 
-			$this->session->set_flashdata('success',  'Alat '.$detail[0]->namaAlat.'telah diaccept!');
+			$this->session->set_flashdata('success',  'Alat '.$detail[0]->namaAlat.' telah diaccept!');
             redirect('pimpinan/alat_masuk');
 		}else{
 			$this->session->set_flashdata('error', "Accept alat error!");

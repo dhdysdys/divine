@@ -30,3 +30,29 @@ CREATE TABLE dataAlatBaru (
     alasanReject TEXT DEFAULT NULL,
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
 );
+
+CREATE TABLE dataTransaksiAlatEvent{
+    id INT NOT NULL IDENTITY PRIMARY KEY,
+    kodeEvent INT NOT NULL,
+    kodeAlat INT NOT NULL,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
+};
+
+ALTER TABLE dataTransaksiAlatEvent ADD  CONSTRAINT kode_alat FOREIGN KEY (`kodeAlat`) REFERENCES dataAlat(`kodeAlat`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE dataEventBaru ( 
+    kodeEvent INT NOT NULL IDENTITY PRIMARY KEY,
+    namaEvent VARCHAR(255) NOT NULL,
+    namaClient VARCHAR(255) NOT NULL,
+    tanggalWaktuMulaiEvent DATETIME NOT NULL,
+    tanggalWaktuSelesaiEvent DATETIME NOT NULL,
+    lokasiEvent VARCHAR(255) NOT NULL,
+    rundownEvent TEXT NOT NULL,
+    totalHarga INT NOT NULL,
+    hargaKesepakatan INT NOT NULL,
+    status INT NOT NULL,
+    alasanReject TEXT DEFAULT NULL, 
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
+);
+
+

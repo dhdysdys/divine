@@ -14,6 +14,15 @@
             return $query->result();
         }
 
+        public function get_available(){
+            $this->db->where('statusAlat = 3');
+            $this->db->from('dataAlat');
+            $this->db->select('*');
+            $query = $this->db->get();
+
+            return $query->result();
+        }
+
         public function add_alat($data){
             $this->db->insert('dataAlat', $data);
         }
