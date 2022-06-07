@@ -107,7 +107,7 @@ class Add_event extends CI_Controller {
 				chmod($config['upload_path'], 0777);
 			}
 
-            $config['file_name'] = $_FILES['file']['name'];
+            $config['file_name'] = $_FILES['rundownEvent']['name'];
 			$config['max_size']  = '5048000';
 			$config['overwrite'] = true;
 			$config['allowed_types'] = 'pdf';
@@ -129,7 +129,8 @@ class Add_event extends CI_Controller {
 					"lokasiEvent" => $lokasi,
 					"rundownEvent" => $filename,
 					"totalHarga" => $totalHarga,
-					"hargaKesepakatan" => $hargaKesepakatan
+					"hargaKesepakatan" => $hargaKesepakatan,
+					"status" => 0
 				);
 
 				$insert_id = $this->event_baru_model->add_event($array_insert);

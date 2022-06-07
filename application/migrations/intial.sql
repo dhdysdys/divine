@@ -1,7 +1,7 @@
 USE divine
 
 CREATE TABLE dataUser ( 
-    kodeAdmin INT NOT NULL IDENTITY PRIMARY KEY, 
+    kodeAdmin INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
     namaUser VARCHAR(255) NOT NULL , 
     email VARCHAR(255) NULL , 
     password TEXT NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE dataUser (
 INSERT INTO dataUser (namaUser, email, password, role) VALUES ('admin', 'admin@gmail.com', 'admin', 0);
 
 CREATE TABLE dataAlat ( 
-    kodeAlat INT NOT NULL IDENTITY PRIMARY KEY , 
+    kodeAlat INT NOT NULL IDENTITY(1,1) PRIMARY KEY , 
     namaAlat VARCHAR(255) NOT NULL , 
     tanggalAlatMasuk DATE NOT NULL,
     statusAlat INT NOT NULL , 
@@ -22,7 +22,7 @@ CREATE TABLE dataAlat (
 );
 
 CREATE TABLE dataAlatBaru ( 
-    kodeAlat INT NOT NULL IDENTITY PRIMARY KEY , 
+    kodeAlat INT NOT NULL IDENTITY(1,1) PRIMARY KEY , 
     namaAlat VARCHAR(255) NOT NULL, 
     hargaAlat INT NOT NULL,
     status INT NOT NULL , 
@@ -31,17 +31,17 @@ CREATE TABLE dataAlatBaru (
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
 );
 
-CREATE TABLE dataTransaksiAlatEvent{
-    id INT NOT NULL IDENTITY PRIMARY KEY,
+CREATE TABLE dataTransaksiAlatEvent(
+    id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
     kodeEvent INT NOT NULL,
     kodeAlat INT NOT NULL,
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
-};
+);
 
-ALTER TABLE dataTransaksiAlatEvent ADD  CONSTRAINT kode_alat FOREIGN KEY (`kodeAlat`) REFERENCES dataAlat(`kodeAlat`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE dataTransaksiAlatEvent ADD  CONSTRAINT kode_alat FOREIGN KEY (kodeAlat) REFERENCES dataAlat(kodeAlat) ON DELETE CASCADE ON UPDATE CASCADE;
 
 CREATE TABLE dataEventBaru ( 
-    kodeEvent INT NOT NULL IDENTITY PRIMARY KEY,
+    kodeEvent INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
     namaEvent VARCHAR(255) NOT NULL,
     namaClient VARCHAR(255) NOT NULL,
     tanggalWaktuMulaiEvent DATETIME NOT NULL,

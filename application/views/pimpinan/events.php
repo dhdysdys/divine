@@ -56,10 +56,10 @@
                                             <?php } ?>
                                         </td>
                                         <td class="text-center"> 
-                                            <a href="<?=base_url()?>event/schedule_event/view_rundown/?path=<?=urlencode($data[$i]->rundownEvent)?>" class="btn btn-secondary">Lihat</a>
+                                            <a href="<?=base_url()?>pimpinan/schedule_event/view_rundown/?path=<?=urlencode($data[$i]->rundownEvent)?>" class="btn btn-secondary">Lihat</a>
                                         </td>
                                         <td class="text-center">
-                                            <!-- <a href="<?php echo base_url('event/schedule_event/view_peralatan/'.$data[$i]->kodeEvent); ?>" class="btn btn-secondary">Lihat</a> -->
+                                            <!-- <a href="<?php echo base_url('pimpinan/schedule_event/view_peralatan/'.$data[$i]->kodeEvent); ?>" class="btn btn-secondary">Lihat</a> -->
                                             <a  id="viewBtn" data-toggle="modal" data-target="#modalAlat" data-id="<?= $data[$i]->kodeEvent?>" style="color:white;" class="btn btn-secondary dataAlat">Lihat</a>
                                         </td> 
                                     </tr>
@@ -109,7 +109,7 @@
             const dataEl = e.target;
             $.ajax({
                 "type": "POST",
-                "url": "http://localhost/divine/pimpinan/event_masuk/view_peralatan",
+                "url": "http://localhost/divine/pimpinan/schedule_event/view_peralatan",
                 "data": {
                     "id":dataEl.dataset.id,
                 }

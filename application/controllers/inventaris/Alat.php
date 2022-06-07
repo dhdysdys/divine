@@ -122,7 +122,7 @@ class Alat extends CI_Controller {
 		$id = $this->input->post("kodeAlat");
 		if($id!=null){
 			if($this->form_validation->run() == FALSE){
-				$array_status = array(1,2,3,4);
+				$array_status = array(2,3,4);
 				$data['data_alat']=$this->inventaris_model->get($id);
 				$data["status_alat"] = $array_status;
 				$this->load->view('inventaris/input_alat', $data);
@@ -163,7 +163,7 @@ class Alat extends CI_Controller {
 			}
 		}else{
 			if($this->form_validation->run() == FALSE){
-				$array_status = array(1,2,3,4);
+				$array_status = array(2,3,4);
 				$data["status_alat"] = $array_status;
 				$this->load->view('inventaris/input_alat', $data);
 			}else{
