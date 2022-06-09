@@ -71,7 +71,7 @@
                                 <tr id="addAlat">
                                     <td width="250">
                                         <select class="form-control" name="namaAlat" id="namaAlat">
-                                            <option value="">-Choose-</option>
+                                            <option value="0">-Choose-</option>
                                         </select>
                                     </td>
                                     <td width="150">
@@ -161,8 +161,13 @@
 
             if(namaAlat != "" && hargaAlat != ""){
                 childrenRow(kodeAlat, namaAlat, hargaAlat)
-                if(total.length > 0){
+
+                $('#namaAlat').find(":selected").remove()
+                $("#namaAlat select").val("0");
+                $("#hargaAlat").val("");
+        
                 
+                if(total.length > 0){
                     var sum = total.reduce((a, b) => a + b, 0)
                     $("#hargaAlatTotal").val("Rp. "+sum)
                 }
