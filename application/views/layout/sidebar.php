@@ -41,10 +41,10 @@
                 <a class="nav-link" href="<?php echo base_url('pimpinan/alat'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
                     <b>INVENTARIS ALAT</b>
                 </a>
-                <a class="nav-link" href="<?php echo base_url('pimpinan/alat/pengajuan_alat'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
+                <a class="nav-link" href="<?php echo base_url('pimpinan/alat_tambahan_masuk'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
                     <b>ALAT TAMBAHAN MASUK</b>
                 </a>
-                <a class="nav-link" href="<?php echo base_url('pimpinan/alat/pengajuan_alat'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
+                <a class="nav-link" href="<?php echo base_url('pimpinan/report'); ?>" style="font-size:20px;color:white;background-color: rgba(0,0,0,.5)">
                     <b>REPORT</b>
                 </a>
             <?php }else if($this->session->userdata('role') == 3){ ?>

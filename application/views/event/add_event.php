@@ -98,7 +98,7 @@
                         <?php echo form_error('hargaKesepakatan'); ?>
                     </div>
                     <br>
-                    <button type="submit" name= "submit" id="save" class="btn btn-primary"><b>Save</b></button> 
+                    <button type="submit" name= "submit" id="save" class="btn btn-primary"><b>Request</b></button> 
                     <a type="button" href="<?php echo base_url('dashboard'); ?>" class="btn btn-danger"> <b>Cancel</b></a>
 
                     <?php if($this->session->flashdata('add_alat_error')) echo $this->session->flashdata('add_alat_error'); ?>

@@ -55,4 +55,6 @@ CREATE TABLE dataEventBaru (
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
 );
 
+ALTER TABLE dataTransaksiAlatEvent ADD status INT NOT NULL DEFAULT 0 AFTER kodeAlat;
+
 

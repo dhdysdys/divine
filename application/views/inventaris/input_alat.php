@@ -50,7 +50,7 @@
                         <?php echo form_error('hargaRetail'); ?>
                     </div>
                     <br>
-                    <button type="submit" name= "submit" id="save" class="btn btn-primary"><b>Save</b></button> 
+                    <button type="submit" name= "submit" id="save" class="btn btn-success"><b>Save</b></button> 
                     <a type="button" href="<?php echo base_url('inventaris/alat'); ?>" class="btn btn-danger"> <b>Cancel</b></a>
 
                     <?php if($this->session->flashdata('add_alat_error')) echo $this->session->flashdata('add_alat_error'); ?>

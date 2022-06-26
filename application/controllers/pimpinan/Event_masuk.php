@@ -104,9 +104,16 @@ class Event_masuk extends CI_Controller {
 						"statusAlat" => 2
 					);
 
+					$array_update_status_alat = array(
+						"status" => 1
+					);
+
 					$this->inventaris_model->edit_alat($array_update_status, $alat[$i]->kodeAlat);
+					$this->event_baru_model->edit_status_alat($array_update_status_alat, array("kodeEvent"=>$id, "kodeAlat"=>$alat[$i]->kodeAlat,"status"=>0));
 				}
 			}
+
+			
 
 			$this->event_baru_model->edit_status($data, $id);
 

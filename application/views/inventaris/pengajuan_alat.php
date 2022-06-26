@@ -32,7 +32,7 @@
                         <?php echo form_error('alasan'); ?>
                     </div>
                     
-                    <button type="submit" name= "submit" id="save" class="btn btn-secondary"><b>Request</b></button> 
+                    <button type="submit" name= "submit" id="save" class="btn btn-primary"><b>Request</b></button> 
                     <a type="button" href="<?php echo base_url('inventaris/alat'); ?>" class="btn btn-secondary"> <b>Cancel</b></a>
 
                     <?php if($this->session->flashdata('add_alat_error')) echo $this->session->flashdata('add_alat_error'); ?>

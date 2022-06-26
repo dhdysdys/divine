@@ -25,6 +25,7 @@ class Schedule_event extends CI_Controller {
 		$this->load->helper(array('form', 'url', 'download'));
 		$this->load->library(['form_validation','session']);
 		$this->load->model('event_baru_model');
+		$this->load->model('inventaris_model');
     }
 
 	public function index(){
@@ -51,5 +52,40 @@ class Schedule_event extends CI_Controller {
             $this->load->library('user_agent');
             redirect($this->agent->referrer());
         }
+	}
+
+	public function view_peralatan(){
+		$id = $this->input->post("id");
+		$data = array();
+		$alat = array();
+
+		if($id != NULL){
+			$get_list = $this->event_baru_model->get_list_alat($id);
+
+			if($get_list){
+				for($i=0;$i<count($get_list);$i++){
+					$details = $this->inventaris_model->get($get_list[$i]->kodeAlat);
+					
+					foreach($details as $l){
+						$temp = array(
+							"namaAlat" => $l->namaAlat,
+							"hargaAlat" => $l->hargaRetail
+						);
+
+						array_push($alat, $temp);
+					}	
+				}
+			}
+
+			$data = array(
+				"error" => 0,
+				"data" => $alat
+			);
+		}else{
+			$data = array(
+				"error" => 1
+			);
+		}
+		echo json_encode($data);
 	}
 }

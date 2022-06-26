@@ -48,17 +48,19 @@ class Alat extends CI_Controller {
 			$alat = $this->input->post("namaAlatInput");
 			$kodeAlat = $this->input->post("kodeAlatInput");
 			$harga = $this->input->post("hargaAlatInput");
+			$kodeEVent = $this->input->post("kodeEvent");
 		
-			// $array_insert = array(
-			// 	"namaAlat" => $namaAlat,
-			// 	"hargaAlat" => $hargaAlat,
-			// 	"alasan" => $alasan,
-			// 	"status" => 0
-			// ); 
+			for($i =0; $i< sizeof($alat);$i++){
+				$array_insert_alat = array(
+					"kodeEvent" => $kodeEVent,
+					"kodeAlat" => $kodeAlat[$i]
+				);
 
-			// $this->pengajuan_alat_model->add_pengajuan($array_insert);
-			// $this->session->set_flashdata('success', 'Sukses mengajukan alat baru!');
-			// redirect("inventaris/alat");
+				$this->event_baru_model->add_alat_event($array_insert_alat);
+			}
+
+			$this->session->set_flashdata('success', 'Sukses mengajukan alat baru!');
+			redirect("event/schedule_event");
 		}
 	
 	}

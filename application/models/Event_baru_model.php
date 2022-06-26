@@ -14,6 +14,15 @@
             return $query->result();
         }
 
+        public function get_list_event($where=null){
+            if(!empty($where)) $this->db->where($where);
+            $this->db->from('dataEventBaru');
+            $this->db->select('*');
+            $query = $this->db->get();
+
+            return $query->result();
+        }
+
         public function add_event($data){
             $this->db->insert('dataEventBaru', $data);
 
@@ -27,12 +36,43 @@
         }
 
         public function get_list_alat($id){
-            if(!empty($id)) $this->db->where('kodeEvent', $id);
+            if(!empty($id)) $this->db->where(array('kodeEvent'=>$id, "status"=>1));
             $this->db->from('dataTransaksiAlatEvent');
             $this->db->select('*');
             $query = $this->db->get();
 
             return $query->result();
+        }
+
+        public function get_list_alat_pending($id=null){
+            if(!empty($id)){
+                $this->db->where('id', $id);
+            }else{
+                $this->db->where(array("status"=>0));
+            }
+            
+            $this->db->from('dataTransaksiAlatEvent');
+            $this->db->select('*');
+            $query = $this->db->get();
+
+            return $query->result();
+        }
+
+        public function get_most_used($kodeEvent){
+            $this->db->where_in("kodeEvent", $kodeEvent);
+            
+            $this->db->distinct();
+            $this->db->from('dataTransaksiAlatEvent');
+            $this->db->select('kodeAlat, COUNT(kodeEvent) AS "jumlah"');
+            $this->db->group_by('kodeAlat'); 
+            $query = $this->db->get();
+
+            return $query->result();
+        }
+
+        public function edit_status_alat($data, $where){
+            $this->db->where($where);
+            $this->db->update('dataTransaksiAlatEvent', $data);
         }
 
         public function edit_status($data, $id){

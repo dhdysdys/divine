@@ -55,7 +55,7 @@
                         <?php echo form_error('namaAlatInput'); ?>
                     </div>
                     
-                    <button type="submit" name= "submit" id="save" class="btn btn-secondary"><b>Request</b></button> 
+                    <button type="submit" name= "submit" id="save" class="btn btn-primary"><b>Request</b></button> 
                     <a type="button" href="<?php echo base_url('inventaris/alat'); ?>" class="btn btn-secondary"> <b>Cancel</b></a>
 
                     <?php if($this->session->flashdata('add_alat_error')) echo $this->session->flashdata('add_alat_error'); ?>
@@ -117,8 +117,12 @@
 
             if(namaAlat != "" && hargaAlat != ""){
                 childrenRow(kodeAlat, namaAlat, hargaAlat)
+
+                $('#namaAlat').find(":selected").remove()
+                $("#namaAlat select").val("0");
+                $("#hargaAlat").val("");
+
                 if(total.length > 0){
-                
                     var sum = total.reduce((a, b) => a + b, 0)
                     $("#hargaAlatTotal").val("Rp. "+sum)
                 }
