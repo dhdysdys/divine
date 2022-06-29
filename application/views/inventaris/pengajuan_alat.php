@@ -17,7 +17,8 @@
                     <?php echo form_open('inventaris/alat/pengajuan_submit'); ?> 
                     <div class="form-group">
                         <label for="namaAlat"><b>Nama Alat</b></label>
-                        <input type="text" class="form-control col-5" name="namaAlat" id="namaAlat" autocomplete="off">
+                        <textarea name="namaAlat" type="text"  class="form-control col-5"  id="namaAlat" cols="10" rows="2"></textarea>
+                        <!-- <input type="text" class="form-control col-5" name="namaAlat" id="namaAlat" autocomplete="off"> -->
                         <?php echo form_error('namaAlat'); ?>
                     </div>
                     <div class="form-group">

@@ -48,7 +48,12 @@ class Report extends CI_Controller {
 		$curr_event = [];
 		$curr_harga = [];
 
-		$get_event = $this->event_baru_model->get_list_event(array("DATE_FORMAT(tanggalWaktuMulaiEvent, '%Y-%m-%d') >=" => $start_date, "DATE_FORMAT(tanggalWaktuSelesaiEvent, '%Y-%m-%d') <= " => $end_date, "status = " => 1 ));
+		$startDate = "CAST('".$start_date."' AS DATETIME)";
+		$endDate = "CAST('".$end_date."' AS DATETIME)";
+
+		$where = "tanggalWaktuMulaiEvent >= ".$startDate." AND tanggalWaktuSelesaiEvent <=".$endDate." AND status = 1";
+
+		$get_event = $this->event_baru_model->get_list_event($where);
 
 		foreach($get_event as $list){
 			array_push($curr_event, $list->kodeEvent);
@@ -72,8 +77,6 @@ class Report extends CI_Controller {
 			array_push($data, $temp);
 		}
 
-
-
 		$output = array(
 			"draw" => $this->input->post("draw"),
 			"recordsTotal" => sizeof($get_event),
@@ -94,7 +97,12 @@ class Report extends CI_Controller {
 		$curr_alat = [];
 		$curr_harga = [];
 
-		$get_alat = $this->inventaris_model->get_list_alat(array("DATE_FORMAT(tanggalAlatMasuk, '%Y-%m-%d') >=" => $start_date, "DATE_FORMAT(tanggalAlatMasuk, '%Y-%m-%d') <= " => $end_date));
+		$startDate = "CAST('".$start_date."' AS DATETIME)";
+		$endDate = "CAST('".$end_date."' AS DATETIME)";
+
+		$where = "tanggalAlatMasuk >= ".$startDate." AND tanggalAlatMasuk <=".$endDate;
+
+		$get_alat = $this->inventaris_model->get_list_alat($where);
 
 		foreach($get_alat as $list){
 			array_push($curr_alat, $list->kodeAlat);
@@ -129,10 +137,18 @@ class Report extends CI_Controller {
 	public function get_inventaris_report($start_date, $end_date){
 		$data = array();
 		$dataTotal = array();
-	
-		$get_alat = $this->inventaris_model->get_list_alat(array("DATE_FORMAT(tanggalAlatMasuk, '%Y-%m-%d') >=" => $start_date, "DATE_FORMAT(tanggalAlatMasuk, '%Y-%m-%d') <= " => $end_date));
 
-		$get_alat_rusak = $this->inventaris_model->get_list_alat(array("DATE_FORMAT(tanggalAlatMasuk, '%Y-%m-%d') >=" => $start_date, "DATE_FORMAT(tanggalAlatMasuk, '%Y-%m-%d') <= " => $end_date, "statusAlat" => 4));
+		$startDate = "CAST('".$start_date."' AS DATETIME)";
+		$endDate = " CAST('".$end_date."' AS DATETIME)";
+
+		$where1 = "tanggalAlatMasuk >= ".$startDate." AND tanggalAlatMasuk <=".$endDate;
+		$where2 = "tanggalAlatMasuk >= ".$startDate." AND tanggalAlatMasuk <=".$endDate." AND statusAlat = 4";
+	
+		$get_alat = $this->inventaris_model->get_list_alat($where1);
+
+		$get_alat_rusak = $this->inventaris_model->get_list_alat($where2);
+
+		// $get_alat_rusak = $this->inventaris_model->get_list_alat(array("tanggalAlatMasuk >=" => $startDate, " tanggalAlatMasuk <= " => $endDate, "statusAlat" => 4));
 
 		
 		$totalAlat = sizeof($get_alat);
@@ -279,7 +295,12 @@ class Report extends CI_Controller {
 		$dataTotal = array();
 		$curr_kodeEvent = array();
 
-		$get_event = $this->event_baru_model->get_list_event(array("DATE_FORMAT(tanggalWaktuMulaiEvent, '%Y-%m-%d') >=" => $start_date, "DATE_FORMAT(tanggalWaktuSelesaiEvent, '%Y-%m-%d') <= " => $end_date));
+		$startDate = "CAST('".$start_date."' AS DATETIME)";
+		$endDate = "CAST('".$end_date."' AS DATETIME)";
+
+		$where = "tanggalWaktuMulaiEvent >= ".$startDate." AND tanggalWaktuSelesaiEvent <=".$endDate;
+
+		$get_event = $this->event_baru_model->get_list_event($where);
 
 		foreach($get_event as $list){
 			array_push($curr_kodeEvent, $list->kodeEvent);

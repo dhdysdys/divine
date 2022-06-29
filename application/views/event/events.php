@@ -109,7 +109,7 @@
             const dataEl = e.target;
             $.ajax({
                 "type": "POST",
-                "url": "http://localhost/divine/pimpinan/event_masuk/view_peralatan",
+                "url": "http://localhost/divine/event/schedule_event/view_peralatan",
                 "data": {
                     "id":dataEl.dataset.id,
                 }

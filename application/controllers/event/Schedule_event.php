@@ -33,6 +33,37 @@ class Schedule_event extends CI_Controller {
 		if(!$this->session->userdata('email')){
 			redirect("auth");
 		}else{
+			//check ada event berjalan hari ini apa ga
+			$check_event =  $this->event_baru_model->get();
+			$today = date('Y-m-d');
+			foreach($check_event as $list){
+				if(date_format(date_create($list->tanggalWaktuMulaiEvent),"Y-m-d") >= $today || date_format(date_create($list->tanggalWaktuSelesaiEvent),"Y-m-d") <= $today){
+					$get_list = $this->event_baru_model->get_list_alat($list->kodeEvent);
+
+					if($get_list){
+						for($i=0;$i<count($get_list);$i++){
+							$array_update = array(
+								"statusAlat" => 2
+							);
+
+							$this->inventaris_model->edit_alat($array_update, $get_list[$i]->kodeAlat);
+						}
+					}
+				}else if(date_format(date_create($list->tanggalWaktuMulaiEvent),"Y-m-d") < $today || date_format(date_create($list->tanggalWaktuSelesaiEvent),"Y-m-d") > $today){
+					$get_list = $this->event_baru_model->get_list_alat($id);
+
+					if($get_list){
+						for($i=0;$i<count($get_list);$i++){
+							$array_update = array(
+								"statusAlat" => 3
+							);
+
+							$this->inventaris_model->edit_alat($array_update, $get_list[$i]->kodeAlat);
+						}
+					}
+				}
+			}
+			
 			$data["data"] = $this->event_baru_model->get();
 			$this->load->view('event/events', $data);
 		}

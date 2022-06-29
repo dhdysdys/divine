@@ -26,34 +26,56 @@
                         <input type="text" class="form-control col-5" name="namaClient" id="namaClient" autocomplete="off">
                         <?php echo form_error('namaClient'); ?>
                     </div>
-                    <div class="form-group">
-                        <label for="tanggalEvent"><b>Tanggal Event</b></label>
-                        <input type="text" class="form-control col-5" name="tanggalEvent" id="tanggalEvent" autocomplete="off" placeholder="yyyy-mm-dd">
-                        <?php echo form_error('tanggalEvent'); ?>
-                    </div>
                     <div class="form-row">
                         <div class="form-group col-sm-1"> 
-                            <label for="jamEventMulai"><b>Waktu Event</b></label>
-                            <input type="number" min="0" max="23" name="jamEventMulai" id="jamEventMulai" class="form-control" placeholder="--" style="width:65px;">
+                            <label for="durasi"><b>Durasi</b></label>
+                            <input type="text" class="form-control col-5" name="durasi" id="durasi" autocomplete="off" style="width:70px;">
                         </div>
                         <div class="form-group col-sm-0"> 
-                            <label for="menitEventMulai" style="color:black;">.</label>
-                            <input type="number" min="0" max="59" name="menitEventMulai" id="menitEventMulai" class="form-control" placeholder="--" style="width:65px; margin-left:-50px;">
+                            <label for="hari" style="color:black;">.</label>
+                            <p style="width:65px;margin-left:-65px;margin-top:10px;"><b>hari</b></p>
                         </div>
-                        <div class="form-group col-sm-1"> 
-                            <label for="sd" style="color:black;">.</label>
-                            <input class="form-control" type="text" style="border:none;background-color:transparent;resize:none;outline:none;color:white;font-weight:bold;margin-left:-10px;width:60px;" value="s.d." readonly>
-                        </div>
-                        <div class="form-group col-sm-1"> 
-                            <label for="jamEventSelesai" style="color:black;">.</label>
-                            <input type="number" min="0" max="23" name="jamEventSelesai" id="jamEventSelesai" class="form-control" placeholder="--" style="width:65px;margin-left:-70px;">
-                        </div>
-                        <div class="form-group col-sm-0"> 
-                            <label for="menitEventSelesai" style="color:black;">.</label>
-                            <input type="number" min="0" max="59" name="menitEventSelesai" id="menitEventSelesai" class="form-control" placeholder="--" style="width:65px; margin-left:-120px;">
-                        </div>
-                        <?php echo form_error('waktuEvent'); ?>
+                        <?php echo form_error('durasi'); ?>
                     </div>
+                    <div class="form-group">
+                        <label for="tanggalMulai"><b>Tanggal Mulai Event</b></label>
+                        <input type="text" class="form-control col-5" name="tanggalMulai" id="tanggalMulai" autocomplete="off" placeholder="yyyy-mm-dd">
+                        <?php echo form_error('tanggalMulai'); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggalSelesai"><b>Tanggal Berakhir Event</b></label>
+                        <input type="text" class="form-control col-5" name="tanggalSelesai" id="tanggalSelesai" autocomplete="off" placeholder="yyyy-mm-dd">
+                        <?php echo form_error('tanggalSelesai'); ?>
+                    </div>
+
+                   <div class="form-group">
+                    <table id="waktuEvent" class="table table-borderless table-dark" style="width:42%;">
+                        <thead>
+                            <tr>
+                                <td class="text-center">Waktu Mulai</td>
+                                <td class="text-center">Waktu Selesai</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="addWaktu">
+                                <td >
+                                    <div class="form-row justify-content-center">
+                                        <input type="number" min="0" max="23" name="jamEventMulai[]" id="jamEventMulai" class="form-control" placeholder="hh" style="width:65px;">
+                                        <input type="number" min="0" max="59" name="menitEventMulai[]" id="menitEventMulai" class="form-control" placeholder="mm" style="width:65px; margin-left:10px;">
+                                    </div>
+                                </td>
+                                <td>
+                                   <div class="form-row justify-content-center">
+                                        <input type="number" min="0" max="23" name="jamEventSelesai[]" id="jamEventSelesai" class="form-control" placeholder="hh" style="width:65px;">
+                                        <input type="number" min="0" max="59" name="menitEventSelesai[]" id="menitEventSelesai" class="form-control" placeholder="mm" style="width:65px; margin-left:10px;">
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                   </div>
                     <div class="form-group">
                         <label for="lokasiEvent"><b>Lokasi Event</b></label>
                         <input type="text" class="form-control col-5" name="lokasiEvent" id="lokasiEvent" autocomplete="off">
@@ -66,7 +88,7 @@
                     </div>
                     <div class="form-group">
                         <label for="hargaRetail"><b>Peralatan dan Harga</b></label>
-                        <table id="alat" class="table table table-borderless table-dark" style="width:42%;">
+                        <table id="alat" class="table table-borderless table-dark" style="width:42%;">
                             <tbody>
                                 <tr id="addAlat">
                                     <td width="250">
@@ -117,6 +139,7 @@
     var alat = <?= json_encode($alat)?>;
     var total = []
     var rowCount = 0
+    var durasi = 0
 
     if(alat.length > 0){
         for(var i=0;i<alat.length;i++){
@@ -136,9 +159,53 @@
     }   
 
     $(document).ready(function () {
-        $("#tanggalEvent").datepicker({
+        $("#tanggalMulai").datepicker({
             format: 'yyyy-mm-dd'
         });  
+
+        $("#tanggalSelesai").datepicker({
+            format: 'yyyy-mm-dd'
+        });  
+
+        $("#durasi").on("change", function(){
+            durasi = this.value
+           
+            if(durasi != null){ 
+                var get_tanggal_mulai = $("#tanggalMulai").val()
+                if(get_tanggal_mulai == ""){
+                    $("#tanggalMulai").on("change", function(){
+                        var [year, month, day] = this.value.split("-")
+
+                        var start_date = new Date(year, month-1, day);
+                        var get_end_date = start_date.setDate(start_date.getDate() + parseInt(durasi));
+                        var end_date = new Date(get_end_date).toISOString().split('T')[0] 
+
+
+                        $("#tanggalSelesai").change().val(end_date)
+                    })
+                }else{
+                    var [year, month, day] = get_tanggal_mulai.split("-")
+
+                    var start_date = new Date(year, month-1, day);
+                    var get_end_date = start_date.setDate(start_date.getDate() + parseInt(durasi));
+                    var end_date = new Date(get_end_date).toISOString().split('T')[0] 
+
+                    $("#tanggalSelesai").change().val(end_date)
+                }
+              
+
+                rowCount = $('#waktuEvent tr').length;
+                var rowCount = rowCount - 1
+                var row = durasi - rowCount
+
+                console.log("row", row)
+                for(var i=0;i<=row;i++){
+                    $("#waktuEvent").find('tbody').append('<tr><td ><div class="form-row justify-content-center"><input type="number" min="0" max="23" name="jamEventMulai[]" id="jamEventMulai" class="form-control" placeholder="hh" style="width:65px;"><input type="number" min="0" max="59" name="menitEventMulai[]" id="menitEventMulai" class="form-control" placeholder="mm" style="width:65px; margin-left:10px;"></div></td><td><div class="form-row justify-content-center"><input type="number" min="0" max="23" name="jamEventSelesai[]" id="jamEventSelesai" class="form-control" placeholder="hh" style="width:65px;"><input type="number" min="0" max="59" name="menitEventSelesai[]" id="menitEventSelesai" class="form-control" placeholder="mm" style="width:65px; margin-left:10px;"></div></td></tr>');
+                    i++
+                }
+                
+            }
+        })
 
         $("#namaAlat").on("change", function(){
             $('#namaAlat option').each(function() {

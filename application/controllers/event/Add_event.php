@@ -40,11 +40,12 @@ class Add_event extends CI_Controller {
 	public function submit(){
 		$this->form_validation->set_rules('namaEvent', 'Nama Event', 'required');
         $this->form_validation->set_rules('namaClient', 'Nama Client', 'required');
-        $this->form_validation->set_rules('tanggalEvent', 'Tanggal Event', 'required');
-        $this->form_validation->set_rules('jamEventMulai', 'Waktu Mulai', 'required|numeric');
-		$this->form_validation->set_rules('menitEventMulai', 'Waktu Mulai', 'required|numeric');
-		$this->form_validation->set_rules('jamEventSelesai', 'Waktu Mulai', 'required|numeric');
-		$this->form_validation->set_rules('menitEventSelesai', 'Waktu Mulai', 'required|numeric');
+        $this->form_validation->set_rules('tanggalMulai', 'Tanggal Mulai Event', 'required');
+		$this->form_validation->set_rules('tanggalSelesai', 'Tanggal Berakhir Event', 'required');
+        $this->form_validation->set_rules('jamEventMulai[]', 'Waktu Mulai', 'required|numeric');
+		$this->form_validation->set_rules('menitEventMulai[]', 'Waktu Mulai', 'required|numeric');
+		$this->form_validation->set_rules('jamEventSelesai[]', 'Waktu Mulai', 'required|numeric');
+		$this->form_validation->set_rules('menitEventSelesai[]', 'Waktu Mulai', 'required|numeric');
 		$this->form_validation->set_rules('lokasiEvent', 'Lokasi Event', 'required');
         $this->form_validation->set_rules('namaAlatInput[]', 'Nama Alat', 'required');
 		$this->form_validation->set_rules('hargaAlatInput[]', 'Harga Alat', 'required');
@@ -56,7 +57,9 @@ class Add_event extends CI_Controller {
         }else{
 			$namaEvent = $this->input->post("namaEvent");
 			$namaClient = $this->input->post("namaClient");
-			$tanggalEvent = $this->input->post("tanggalEvent");
+			$tanggalMulai = $this->input->post("tanggalMulai");
+			$durasi = $this->input->post("durasi");
+			$tanggalSelesai = $this->input->post("tanggalSelesai");
 			$alat = $this->input->post("namaAlatInput");
 			$kodeAlat = $this->input->post("kodeAlatInput");
 			$harga = $this->input->post("hargaAlatInput");
@@ -69,28 +72,6 @@ class Add_event extends CI_Controller {
 			$hargaKesepakatan = $this->input->post("hargaKesepakatan");
 			$rundown = $this->input->post("rundownEvent");
 			$lokasi = $this->input->post("lokasiEvent");
-
-			if($jamMulai < 10 && strlen($jamMulai) == 1){
-				$jamMulai = "0".$jamMulai;
-			}
-
-			if($menitMulai < 10 && strlen($menitMulai) == 1){
-				$menitMulai = "0".$menitMulai;
-			}
-
-			if($jamSelesai < 10 && strlen($jamSelesai) == 1){
-				$jamSelesai = "0".$jamSelesai;
-			}
-
-			if($menitSelesai < 10 && strlen($menitSelesai) == 1 ){
-				$menitSelesai = "0".$menitSelesai;
-			}
-
-			$timeMulai = $jamMulai.":".$menitMulai.":00";
-			$timeSelesai = $jamSelesai.":".$menitSelesai.":00";
-
-			$tanggalMulai = $tanggalEvent." ".$timeMulai;
-			$tanggalSelesai = $tanggalEvent." ".$timeSelesai;
 
 			if (!is_dir('data')) {
                 mkdir('data/', 0777);
@@ -120,10 +101,11 @@ class Add_event extends CI_Controller {
                 $return = array('result' => 'success', 'file' => $this->upload->data(), 'error' => '');
 				$uploadData = $this->upload->data(); 
 				$filename = $uploadData['file_name'];
-				
+
 				$array_insert = array(
 					"namaEvent" => $namaEvent,
 					"namaClient" => $namaClient,
+					"durasi" => $durasi,
 					"tanggalWaktuMulaiEvent" => $tanggalMulai,
 					"tanggalWaktuSelesaiEvent" => $tanggalSelesai,
 					"lokasiEvent" => $lokasi,
@@ -134,7 +116,145 @@ class Add_event extends CI_Controller {
 				);
 
 				$insert_id = $this->event_baru_model->add_event($array_insert);
+
+				
+				if(sizeof($jamMulai) > 1 && sizeof($jamSelesai) > 1){
+
+					$tglMulaiSplit = explode('-', $tanggalMulai)[2];
+					$bulanMulaiSplit = explode('-', $tanggalMulai)[1];
+					$tahunMulaiSplit = explode('-', $tanggalMulai)[0];
+					$tglSelesaiSplit = explode("-",$tanggalSelesai)[2];
+					$bulanSelesaiSplit = explode('-', $tanggalSelesai)[1];
+					$tahunSelesaiSplit = explode('-', $tanggalSelesai)[0];
+
+					$timeMulai = $jamMulai[0].":".$menitMulai[0].":00";
+					$timeSelesai = $jamSelesai[0].":".$menitSelesai[0].":00";
+
+					$tanggalMulaicurr = $tanggalMulai;
+					$tanggalMulai = $tanggalMulai." ".$timeMulai;
+					$tanggalSelesai = $tanggalMulaicurr." ".$timeSelesai;
+
+					if($insert_id){
+						$array_insert = array(
+							"kodeEvent" => $insert_id,
+							"tanggalMulai" => $tanggalMulai,
+							"tanggalSelesai" => $tanggalSelesai
+						);
+
+						$this->event_baru_model->add_waktu($array_insert);
+					}
+
+					for($j=1;$j<$durasi;$j++){
+						if($j < $durasi){
+							$tglMulaiSplit = intval($tglMulaiSplit) + 1;
+
+							if($tglMulaiSplit < 10 && strlen($tglMulaiSplit) == 1){
+								$tglMulaiSplit = "0".$tglMulaiSplit;
+							}
+
+							$tglMulaiFix = $tahunMulaiSplit."-".$bulanMulaiSplit."-".$tglMulaiSplit;
+							
+							if($jamMulai[$j] < 10 && strlen($jamMulai[$j]) == 1){
+								$jamMulai[$j] = "0".$jamMulai[$j];
+							}
+				
+							if($menitMulai[$j] < 10 && strlen($menitMulai[$j]) == 1){
+								$menitMulai = "$j".$menitMulai;
+							}
+				
+							if($jamSelesai[$j] < 10 && strlen($jamSelesai[$j]) == 1){
+								$jamSelesai[$j] = "$i".$jamSelesai[$j];
+							}
+				
+							if($menitSelesai[$j] < 10 && strlen($menitSelesai[$j]) == 1 ){
+								$menitSelesai[$j] = "$i".$menitSelesai[$j];
+							}
+				
+							$timeMulai = $jamMulai[$j].":".$menitMulai[$j].":00";
+							$timeSelesai = $jamSelesai[$j].":".$menitSelesai[$j].":00";
+							
+
+							$tanggalMulai = $tglMulaiFix." ".$timeMulai;
+							$tanggalSelesai = $tglMulaiFix." ".$timeSelesai;
+						}else{
+							$tglSelesaiSplit = $tahunSelesaiSplit."-".$bulanSelesaiSplit."-".$tglSelesaiSplit." ";
+							
+							$tglSelesaiFix = $tahunMulaiSplit."-".$bulanMulaiSplit."-".$tglMulaiSplit;
+							
+							if($jamMulai[$j] < 10 && strlen($jamMulai[$j]) == 1){
+								$jamMulai[$j] = "0".$jamMulai[$j];
+							}
+				
+							if($menitMulai[$j] < 10 && strlen($menitMulai[$j]) == 1){
+								$menitMulai = "$j".$menitMulai;
+							}
+
+							if($jamSelesai[$j] < 10 && strlen($jamSelesai[$j]) == 1){
+								$jamSelesai[$j] = "$i".$jamSelesai[$j];
+							}
+				
+							if($menitSelesai[$j] < 10 && strlen($menitSelesai[$j]) == 1 ){
+								$menitSelesai[$j] = "$i".$menitSelesai[$j];
+							}
+				
+						
+							$timeMulai = $jamMulai[$j].":".$menitMulai[$j].":00";
+							$timeSelesai = $jamSelesai[$j].":".$menitSelesai[$j].":00";
+							
+
+							print_r($timeSelesai);
+							$tanggalMulai = $tglMulaiFix." ".$timeMulai;
+							$tanggalSelesai = $tglSelesaiFix." ".$timeSelesai;
+						
+						}
+						
+						if($insert_id){
+							$array_insert = array(
+								"kodeEvent" => $insert_id,
+								"tanggalMulai" => $tanggalMulai,
+								"tanggalSelesai" => $tanggalSelesai
+							);
 	
+							$this->event_baru_model->add_waktu($array_insert);
+						}
+
+					}
+
+					
+				}else{
+					if($jamMulai[0] < 10 && strlen($jamMulai[0]) == 1){
+						$jamMulai[0] = "0".$jamMulai[0];
+					}
+		
+					if($menitMulai[0] < 10 && strlen($menitMulai[0]) == 1){
+						$menitMulai = "0".$menitMulai;
+					}
+		
+					if($jamSelesai[0] < 10 && strlen($jamSelesai[0]) == 1){
+						$jamSelesai[0] = "0".$jamSelesai[0];
+					}
+		
+					if($menitSelesai[0] < 10 && strlen($menitSelesai[0]) == 1 ){
+						$menitSelesai[0] = "0".$menitSelesai[0];
+					}
+		
+					$timeMulai = $jamMulai[0].":".$menitMulai[0].":00";
+					$timeSelesai = $jamSelesai[0].":".$menitSelesai[0].":00";
+	
+					$tanggalMulaiEvent = $tanggalMulai." ".$timeMulai;
+					$tanggalSelesaiEvent = $tanggalSelesai." ".$timeSelesai;
+
+					if($insert_id){
+						$array_insert = array(
+							"kodeEvent" => $insert_id,
+							"tanggalMulai" => $tanggalMulaiEvent,
+							"tanggalSelesai" => $tanggalSelesaiEvent
+						);
+
+						$this->event_baru_model->add_waktu($array_insert);
+					}
+				}
+
 				$success = 0;
 				if($insert_id){
 					for($i =0; $i< sizeof($alat);$i++){

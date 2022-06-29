@@ -67,7 +67,7 @@
                                         <td class="text-center">
                                             <?php if($data[$i]->status == 0){?>
                                                 <a href="<?php echo base_url('pimpinan/event_masuk/accept/'.$data[$i]->kodeEvent); ?>" class="btn btn-success">Accept</a>
-                                                <a  id="rejectBtn" data-toggle="modal" data-target="#rejectModal" data-id="<?= $data[$i]->kodeEvent?>" class="btn btn-danger data">Decline</a>
+                                                <a  id="rejectBtn" data-toggle="modal" data-target="#rejectModal" data-id="<?= $data[$i]->kodeEvent?>" class="btn btn-danger data">Reject</a>
                                             <?php }else if($data[$i]->status == 1){ ?>
                                                 <p style="color:green;font-weight:bold;font-size:1rem;">Accepted</p>
                                             <?php }else if($data[$i]->status == 2){ ?>     
@@ -112,7 +112,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalReject"><b>Decline Note</b></h5>
+                    <h5 class="modal-title" id="modalReject"><b>Reject Note</b></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -120,7 +120,7 @@
                 <div class="modal-body">
                     <input type="hidden" name="kodeEvent" id="kodeEvent">
                     <div class="form-group">
-                        <label for="inputBobot" class="col-sm-6 col-form-label">Alasan decline event</label>
+                        <label for="inputBobot" class="col-sm-6 col-form-label">Alasan reject event</label>
                         <div class="col-sm-12">
                             <textarea name="alasan" id="alasan" cols="30" rows="3" class="form-control"></textarea>
                         </div>
@@ -128,7 +128,7 @@
 
                     <div class="button-group">
                         <center>
-                        <button type="submit" id="btn-submit" class="btn btn-danger">Decline</button>
+                        <button type="submit" id="btn-submit" class="btn btn-danger">Reject</button>
                         <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </center>
                     </div>

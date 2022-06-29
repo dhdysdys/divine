@@ -29,6 +29,12 @@
             return $this->db->insert_id();
         }
 
+        public function add_waktu($data){
+            $this->db->insert('dataTransaksiWaktu', $data);
+
+            return 1;
+        }
+
         public function add_alat_event($data){
             $this->db->insert('dataTransaksiAlatEvent', $data);
 
@@ -36,7 +42,7 @@
         }
 
         public function get_list_alat($id){
-            if(!empty($id)) $this->db->where(array('kodeEvent'=>$id, "status"=>1));
+            if(!empty($id)) $this->db->where(array('kodeEvent'=>$id));
             $this->db->from('dataTransaksiAlatEvent');
             $this->db->select('*');
             $query = $this->db->get();

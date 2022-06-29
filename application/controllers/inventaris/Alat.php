@@ -25,6 +25,7 @@ class Alat extends CI_Controller {
 		$this->load->helper(array('form', 'url'));
 		$this->load->library(['form_validation','session']);
         $this->load->model('inventaris_model');
+		$this->load->model('event_baru_model');
 		$this->load->model('pengajuan_alat_model');
     }
 
@@ -38,6 +39,36 @@ class Alat extends CI_Controller {
 			$listPengajuan = array();
 			$flag = 0;
 			$flagRest = 0;
+
+			$check_event =  $this->event_baru_model->get();
+			$today = date('Y-m-d');
+			foreach($check_event as $list){
+				if(date_format(date_create($list->tanggalWaktuMulaiEvent),"Y-m-d") >= $today || date_format(date_create($list->tanggalWaktuSelesaiEvent),"Y-m-d") <= $today){
+					$get_list = $this->event_baru_model->get_list_alat($list->kodeEvent);
+
+					if($get_list){
+						for($i=0;$i<count($get_list);$i++){
+							$array_update = array(
+								"statusAlat" => 2
+							);
+
+							$this->inventaris_model->edit_alat($array_update, $get_list[$i]->kodeAlat);
+						}
+					}
+				}else if(date_format(date_create($list->tanggalWaktuMulaiEvent),"Y-m-d") < $today || date_format(date_create($list->tanggalWaktuSelesaiEvent),"Y-m-d") > $today){
+					$get_list = $this->event_baru_model->get_list_alat($id);
+
+					if($get_list){
+						for($i=0;$i<count($get_list);$i++){
+							$array_update = array(
+								"statusAlat" => 3
+							);
+
+							$this->inventaris_model->edit_alat($array_update, $get_list[$i]->kodeAlat);
+						}
+					}
+				}
+			}
 
 			foreach($pengajuan as $list){
 				for($i=0;$i<count($alat);$i++){

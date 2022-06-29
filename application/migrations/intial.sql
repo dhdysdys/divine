@@ -55,6 +55,19 @@ CREATE TABLE dataEventBaru (
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
 );
 
-ALTER TABLE dataTransaksiAlatEvent ADD status INT NOT NULL DEFAULT 0 AFTER kodeAlat;
+ALTER TABLE divine.dataTransaksiAlatEvent ADD status INT NOT NULL DEFAULT 0 AFTER kodeAlat;
 
 
+ALTER TABLE divine.dataEventBaru ADD durasi INT NOT NULL DEFAULT 0 AFTER namaClient;
+ALTER TABLE divine.dataEventBaru ALTER COLUMN tanggalWaktuMulaiEvent DATE NOT NULL; 
+ALTER TABLE divine.dataEventBaru ALTER COLUMN tanggalWaktuSelesaiEvent DATE NOT NULL;
+
+CREATE TABLE dataTransaksiWaktu(
+    id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    kodeEvent INT NOT NULL,
+    tanggalMulai DATETIME NOT NULL,
+    tanggalSelesai DATETIME NOT NULL,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
+);
+
+ALTER TABLE dataTransaksiWaktu ADD  CONSTRAINT kode_event FOREIGN KEY (kode_event) REFERENCES dataEventBaru(kodeEvent) ON DELETE CASCADE ON UPDATE CASCADE;
