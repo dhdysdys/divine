@@ -302,7 +302,7 @@ class Report extends CI_Controller {
 		$todayTime =  $dt->format('H:i');
 
 		if($totalRow >= 3){
-			$pdf->Ln(100);
+			$pdf->Ln(90);
 		}else{
 			$pdf->Ln(130);
 		}
@@ -446,10 +446,10 @@ class Report extends CI_Controller {
 		$todayDate =  $dt->format('d/m/Y');
 		$todayTime =  $dt->format('H:i');
 
-		if($totalRow >= 8){
-			$pdf->Ln(110);
+		if($totalRow >= 5){
+			$pdf->Ln(90);
 		}else{
-			$pdf->Ln(140);
+			$pdf->Ln(130);
 		}
 
 		$pdf->Cell(180);
