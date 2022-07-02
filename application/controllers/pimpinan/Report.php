@@ -183,6 +183,12 @@ class Report extends CI_Controller {
 		$pdf->Cell(10,7,'',0,1); //next line
 		$pdf->Cell(10,7,'',0,1);
 		
+		//report time
+		$pdf->SetFont('Arial','U',16);
+		$pdf->Cell(10);
+		$pdf->Cell(10,7,'Report Time');
+		$pdf->Cell(10,7,'',0,1);
+
 		//startdate
 		$startdate = date_format(date_create($start_date),"d F Y");
 		$pdf->SetFont('Arial','',12);
@@ -205,6 +211,8 @@ class Report extends CI_Controller {
 		$pdf->Cell(10,7,'Jumlah Alat Rusak');
 
 		$pdf->Cell(10,7,'',0,1); //next line
+
+		$totalRow = 0;
 
 		//table
 		$header = array('Jumlah Alat', 'Jumlah Alat Rusak');
@@ -232,6 +240,7 @@ class Report extends CI_Controller {
 		$w = array(90, 90);
 		for($i=0;$i<count($dataTotal);$i++)
 			$pdf->Cell($w[$i],7,$dataTotal[$i],1,0,'C',true);
+			$totalRow++;
 		$pdf->Ln();
 		// Color and font restoration
 		$pdf->SetFillColor(255);
@@ -272,26 +281,37 @@ class Report extends CI_Controller {
 		$pdf->Cell(10);
 		$dataAlat = $data;
 		$w = array(15, 15, 100, 50);
+		
 		foreach($dataAlat as $row){
 			$pdf->Cell($w[0],7,$row->no,1,0,'C',true);
 			$pdf->Cell($w[1],7,$row->id,1,0,'C',true);
 			$pdf->Cell($w[2],7,$row->namaAlat,1,0,'L',true);
 			$pdf->Cell($w[3],7,$row->status,1,0,'C',true);
 			$pdf->Ln();
+			$totalRow++;
 		}
 		$pdf->SetFillColor(255);
 		$pdf->SetTextColor(0);
 		$pdf->SetFont('');
 
-		$today = date('d/m/Y');
-		$todayTime = date('H:i');
+		$tz = 'Asia/Jakarta';
+		$timestamp = time();
+		$dt = new DateTime("now", new DateTimeZone($tz)); 
+		$dt->setTimestamp($timestamp);
+		$todayDate =  $dt->format('d/m/Y');
+		$todayTime =  $dt->format('H:i');
 
-		$pdf->Ln(140);
+		if($totalRow >= 3){
+			$pdf->Ln(100);
+		}else{
+			$pdf->Ln(130);
+		}
+
 		$pdf->Cell(180);
 		$pdf->Cell(10,7,'Dicetak Oleh: '.$this->session->userdata('nama'),0, 0, 'R' );
 		$pdf->Cell(10,7,'',0,1);
 		$pdf->Cell(180);
-		$pdf->Cell(10,7,'Tangal cetak: '.$today, 0, 0, 'R' );
+		$pdf->Cell(10,7,'Tangal cetak: '.$todayDate, 0, 0, 'R' );
 		$pdf->Cell(10,7,'',0,1);
 		$pdf->Cell(180);
 		$pdf->Cell(10,7,'Waktu cetak: '.$todayTime, 0, 0, 'R' );
@@ -350,6 +370,12 @@ class Report extends CI_Controller {
 
 		$pdf->Cell(10,7,'',0,1); //next line
 		$pdf->Cell(10,7,'',0,1);
+
+		//report time
+		$pdf->SetFont('Arial','U',16);
+		$pdf->Cell(10);
+		$pdf->Cell(10,7,'Report Time');
+		$pdf->Cell(10,7,'',0,1);
 		
 		//startdate
 		$startdate = date_format(date_create($start_date),"d F Y");
@@ -399,6 +425,7 @@ class Report extends CI_Controller {
 		$pdf->Cell(10);
 		$dataAlat = $data;
 		$w = array(15, 15, 100, 50);
+		$totalRow = 0;
 		foreach($dataAlat as $row){
 			$pdf->Cell($w[0],7,$row->no,1,0,'C',true);
 			$pdf->Cell($w[1],7,$row->id,1,0,'C',true);
@@ -406,20 +433,30 @@ class Report extends CI_Controller {
 			$pdf->Cell($w[3],7,$row->used,1,0,'C',true);
 			$pdf->Ln();
 			$pdf->Cell(10);
+			$totalRow++;
 		}
 		$pdf->SetFillColor(255);
 		$pdf->SetTextColor(0);
 		$pdf->SetFont('');
 
-		$today = date('d/m/Y');
-		$todayTime = date('H:i');
+		$tz = 'Asia/Jakarta';
+		$timestamp = time();
+		$dt = new DateTime("now", new DateTimeZone($tz)); 
+		$dt->setTimestamp($timestamp);
+		$todayDate =  $dt->format('d/m/Y');
+		$todayTime =  $dt->format('H:i');
 
-		$pdf->Ln(140);
+		if($totalRow >= 8){
+			$pdf->Ln(110);
+		}else{
+			$pdf->Ln(140);
+		}
+
 		$pdf->Cell(180);
 		$pdf->Cell(10,7,'Dicetak Oleh: '.$this->session->userdata('nama'),0, 0, 'R' );
 		$pdf->Cell(10,7,'',0,1);
 		$pdf->Cell(180);
-		$pdf->Cell(10,7,'Tangal cetak: '.$today, 0, 0, 'R' );
+		$pdf->Cell(10,7,'Tangal cetak: '.$todayDate, 0, 0, 'R' );
 		$pdf->Cell(10,7,'',0,1);
 		$pdf->Cell(180);
 		$pdf->Cell(10,7,'Waktu cetak: '.$todayTime, 0, 0, 'R' );
@@ -480,8 +517,8 @@ class Report extends CI_Controller {
 
 		//title
 		$pdf->SetFont('Arial','BU',16);
-		$pdf->Cell(70);
-		$pdf->Cell(70,10,'Peralatan');
+		$pdf->Cell(80);
+		$pdf->Cell(10,10,'Peralatan');
 		
 		$pdf->Cell(10,7,'',0,1); //next line
 		$pdf->Cell(10,7,'',0,1);

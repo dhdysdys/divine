@@ -123,7 +123,7 @@ class Schedule_event extends CI_Controller {
 
 		//title
 		$pdf->SetFont('Arial','BU',16);
-		$pdf->Cell(70);
+		$pdf->Cell(80);
 		$pdf->Cell(70,10,'Peralatan');
 		
 		$pdf->Cell(10,7,'',0,1); //next line
