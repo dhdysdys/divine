@@ -23,7 +23,7 @@ class Schedule_event extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->helper(array('form', 'url', 'download'));
-		$this->load->library(['form_validation','session']);
+		$this->load->library(['form_validation','session','pdf']);
 		$this->load->model('event_baru_model');
 		$this->load->model('inventaris_model');
     }
@@ -54,38 +54,90 @@ class Schedule_event extends CI_Controller {
         }
 	}
 
-	public function view_peralatan(){
-		$id = $this->input->post("id");
+	public function view_peralatan($id){
 		$data = array();
 		$alat = array();
 
-		if($id != NULL){
-			$get_list = $this->event_baru_model->get_list_alat($id);
+		$get_list = $this->event_baru_model->get_list_alat($id);
+		$get_nama_event = $this->event_baru_model->get($id);
 
-			if($get_list){
-				for($i=0;$i<count($get_list);$i++){
-					$details = $this->inventaris_model->get($get_list[$i]->kodeAlat);
-					
-					foreach($details as $l){
-						$temp = array(
-							"namaAlat" => $l->namaAlat,
-							"hargaAlat" => $l->hargaRetail
-						);
-
-						array_push($alat, $temp);
-					}	
-				}
+		$no = 1;
+		if($get_list){
+			for($i=0;$i<count($get_list);$i++){
+				$details = $this->inventaris_model->get($get_list[$i]->kodeAlat);
+				
+				foreach($details as $l){
+					$temp = (object)[
+						"no" => $no,
+						"namaAlat" => $l->namaAlat,
+						"hargaAlat" => $l->hargaRetail
+					];
+					$no++;
+					array_push($alat, $temp);
+				}	
 			}
-
-			$data = array(
-				"error" => 0,
-				"data" => $alat
-			);
-		}else{
-			$data = array(
-				"error" => 1
-			);
 		}
-		echo json_encode($data);
+
+		$url = "http://" . $_SERVER['SERVER_NAME'];
+		$path_img = $url."/divine/public/assets/img/divine.png";
+
+		$pdf = new FPDF('P','mm','A4');
+		$pdf->AddPage();
+
+		//sett logo
+		$pdf->Image($path_img,10,10,-700);
+		$pdf->Cell(10,7,'',0,1); //next line
+		$pdf->Cell(10,7,'',0,1);
+
+		//title
+		$pdf->SetFont('Arial','BU',16);
+		$pdf->Cell(70);
+		$pdf->Cell(70,10,'Peralatan');
+		
+		$pdf->Cell(10,7,'',0,1); //next line
+		$pdf->Cell(10,7,'',0,1);
+
+		//nama event
+		$pdf->SetFont('Arial','',12);
+		$pdf->Cell(10);
+		$pdf->Cell(10,7,'Event			:'."   ".$get_nama_event[0]->namaEvent);
+
+		$pdf->Cell(10,7,'',0,1); //next line
+
+		//table
+		$header = array('No. ', 'Nama', 'Harga');
+		// Colors, line width and bold font
+		$pdf->SetFillColor(0,0,0);
+		$pdf->SetTextColor(255);
+		$pdf->SetDrawColor(0,0,0);
+		$pdf->SetLineWidth(.3);
+		$pdf->SetFont('Arial','B');
+
+		// Header
+		$pdf->Cell(10);
+		$w = array(15, 100, 50);
+		for($i=0;$i<count($header);$i++)
+			$pdf->Cell($w[$i],7,$header[$i],1,0,'C',true);
+		$pdf->Ln();
+		// Color and font restoration
+		$pdf->SetFillColor(255);
+		$pdf->SetTextColor(0);
+		$pdf->SetFont('');
+
+		// Data alat
+		$pdf->Cell(10);
+		$dataAlat = $alat;
+		$w = array(15, 100, 50);
+		foreach($dataAlat as $row){
+			$pdf->Cell($w[0],7,$row->no,1,0,'C',true);
+			$pdf->Cell($w[1],7,$row->namaAlat,1,0,'L',true);
+			$pdf->Cell($w[2],7,'Rp. '.$row->hargaAlat,1,0,'C',true);
+			$pdf->Ln();
+			$pdf->Cell(10);
+		}
+		$pdf->SetFillColor(255);
+		$pdf->SetTextColor(0);
+		$pdf->SetFont('');
+		$pdf->Output("D", "Peralatan_event_".$get_nama_event[0]->namaEvent.".pdf", true);
 	}
 }

@@ -49,7 +49,8 @@
                                             <a href="<?=base_url()?>pimpinan/event_masuk/view_rundown/?path=<?=urlencode($data[$i]->rundownEvent)?>" class="btn btn-secondary">Lihat</a>
                                         </td>
                                         <td class="text-center">
-                                            <a  id="viewBtn" data-toggle="modal" data-target="#modalAlat" data-id="<?= $data[$i]->kodeEvent?>" style="color:white;" class="btn btn-secondary dataAlat">Lihat</a>
+                                            <a href="<?=base_url()?>pimpinan/event_masuk/view_peralatan/<?=$data[$i]->kodeEvent?>" class="btn btn-secondary">Lihat</a>
+                                            <!-- <a  id="viewBtn" data-toggle="modal" data-target="#modalAlat" data-id="<?= $data[$i]->kodeEvent?>" style="color:white;" class="btn btn-secondary dataAlat">Lihat</a> -->
                                         </td>
                                         <td class="text-center"> Rp. <?= $data[$i]->totalHarga ?> </td>
                                         <td class="text-center"> Rp. <?= $data[$i]->hargaKesepakatan ?> </td>
@@ -167,36 +168,36 @@
             reject()
         })
 
-        $(".data").on("click", function(e){
-            const dataEl = e.target;
-            $("#kodeEvent").val(dataEl.dataset.id)
-        })
+        // $(".data").on("click", function(e){
+        //     const dataEl = e.target;
+        //     $("#kodeEvent").val(dataEl.dataset.id)
+        // })
 
-        $(".dataAlat").on("click", function(e){
-            const dataEl = e.target;
-            $.ajax({
-                "type": "POST",
-                "url": "http://localhost/divine/pimpinan/event_masuk/view_peralatan",
-                "data": {
-                    "id":dataEl.dataset.id,
-                }
-            }).done(function (res) {
-                console.log(res)
-                var result = JSON.parse(res)
+        // $(".dataAlat").on("click", function(e){
+        //     const dataEl = e.target;
+        //     $.ajax({
+        //         "type": "POST",
+        //         "url": "http://localhost/divine/pimpinan/event_masuk/view_peralatan",
+        //         "data": {
+        //             "id":dataEl.dataset.id,
+        //         }
+        //     }).done(function (res) {
+        //         console.log(res)
+        //         var result = JSON.parse(res)
 
-                $("#tableListALat").find('tbody').children().remove()
-                if(result["error"] == 0){
-                    var data = result["data"]
+        //         $("#tableListALat").find('tbody').children().remove()
+        //         if(result["error"] == 0){
+        //             var data = result["data"]
 
-                    for(var i=0;i<data.length;i++){
-                        console.log(data[i])
-                        $("#tableListALat").find('tbody').append('<tr><td>'+ data[i].namaAlat +'</td> <td class="text-center">Rp. '+ data[i].hargaAlat+'</td></tr>');
-                    }
-                }else{
-                    alert("Gagal mendapatkan data peralatan!")
-                }
-            })
-        })
+        //             for(var i=0;i<data.length;i++){
+        //                 console.log(data[i])
+        //                 $("#tableListALat").find('tbody').append('<tr><td>'+ data[i].namaAlat +'</td> <td class="text-center">Rp. '+ data[i].hargaAlat+'</td></tr>');
+        //             }
+        //         }else{
+        //             alert("Gagal mendapatkan data peralatan!")
+        //         }
+        //     })
+        // })
 
         $(".dataNote").on("click", function(e){
             const dataEl = e.target;

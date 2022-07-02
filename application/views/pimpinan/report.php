@@ -35,9 +35,9 @@
                             <label for="report"><b>Report</b></label>
                             <select name="typeReport" id="typeReport" class="form-control">
                                 <option value="1">Report Event</option>
-                                <option value="2">Report Alat</option>
-                                <option value="3">Report Inventaris</option>
-                                <option value="4">Report Most Used Items</option>
+                                <option value="2">Report Pembelian Alat</option>
+                                <option value="3">Report Alat Rusak</option>
+                                <option value="4">Report Most Used Item(s)</option>
                             </select>
                         </div>
                         <div class="col-sm-2">
@@ -196,31 +196,7 @@
                             searchable:false,
                             className: 'text-center',
                             render: function(data,type,full,meta){
-                                $(".dataAlat").on("click", function(e){
-                                    const dataEl = e.target;
-                                    $.ajax({
-                                        "type": "POST",
-                                        "url": "http://localhost/divine/pimpinan/report/view_peralatan",
-                                        "data": {
-                                            "id":dataEl.dataset.id,
-                                        }
-                                    }).done(function (res) {
-                                        var result = JSON.parse(res)
-                                        $("#tableListALat").find('tbody').children().remove()
-                                        if(result["error"] == 0){
-                                            var data = result["data"]
-
-                                            for(var i=0;i<data.length;i++){
-                                               
-                                                $("#tableListALat").find('tbody').append('<tr><td>'+ data[i].namaAlat +'</td> <td class="text-center">Rp. '+ data[i].hargaAlat+'</td></tr>');
-                                            }
-                                        }else{
-                                            alert("Gagal mendapatkan data peralatan!")
-                                        }
-                                    })
-                                })
-
-                                return  '<a  id="viewBtn" data-toggle="modal" data-target="#modalAlat" data-id="'+parseInt(data) +'" style="color:white;" class="btn btn-secondary dataAlat">Lihat</a>'
+                                return '<a href="http://localhost/divine/pimpinan/report/view_peralatan/' + data+'" class="btn btn-secondary">Lihat</a>'
                             }
                         },
                         {
