@@ -39,6 +39,47 @@ class Alat extends CI_Controller {
 		}
 	}
 
+	public function get_alat_by_event(){
+		$id = $this->input->post("kodeEVent");
+
+		$get_event_detail = $this->event_baru_model->get($id);
+
+		$get_start_date = $get_event_detail[0]->tanggalWaktuMulaiEvent;
+		$get_end_date = $get_event_detail[0]->tanggalWaktuSelesaiEvent;
+
+		$startDate = "CAST('".$get_start_date."' AS DATETIME)";
+		$endDate = " CAST('".$get_end_date."' AS DATETIME)";
+
+		$where_event = " tanggalWaktuMulaiEvent >= ".$startDate." AND tanggalWaktuSelesaiEvent <= ".$endDate. "";
+
+		$get_list_event = $this->event_baru_model->get_list_event($where_event);
+		$get_alat = $this->inventaris_model->get_available();
+
+		$list_alat_event = array();
+		$list_array_fix = array();
+		$kodeAlatTr = array();
+
+		foreach($get_list_event as $list){
+			$get_alat_tr = $this->event_baru_model->get_list_alat($list->kodeEvent);
+			$get_kode_alat = array_column($get_alat_tr, 'kodeAlat');
+
+			foreach($get_alat_tr as $list2){
+				array_push($list_alat_event, $list2->kodeAlat);
+			}
+			
+		}
+		
+		$kodeAlatTr = $list_alat_event;
+
+		foreach($get_alat as $list){
+			if(!in_array($list->kodeAlat,$kodeAlatTr)){
+				array_push($list_array_fix, $list->kodeAlat);
+			}
+		}
+		
+		echo json_encode($list_array_fix);
+	}
+
 	public function pengajuan_submit(){
 		$this->form_validation->set_rules('namaAlatInput[]', 'Nama Alat', 'required');
 		$this->form_validation->set_rules('hargaAlatInput[]', 'Harga Alat', 'required');
@@ -49,6 +90,11 @@ class Alat extends CI_Controller {
 			$kodeAlat = $this->input->post("kodeAlatInput");
 			$harga = $this->input->post("hargaAlatInput");
 			$kodeEVent = $this->input->post("kodeEvent");
+
+			$get_event_detail = $this->event_baru_model->get($kodeEVent)[0];
+			$total = $get_event_detail->totalHarga;
+
+			$totalFix = 0;
 		
 			for($i =0; $i< sizeof($alat);$i++){
 				$array_insert_alat = array(
@@ -57,8 +103,15 @@ class Alat extends CI_Controller {
 					"status" => 3
 				);
 
+				$temp = explode("Rp. ",$harga[$i])[1];
+				$edit_total = (int)$total + (int)$temp;
+				
+				$totalFix = $edit_total;
+
 				$this->event_baru_model->add_alat_event($array_insert_alat);
 			}
+
+			$this->event_baru_model->edit_status(array("totalHarga"=>$totalFix), $kodeEVent);
 
 			$this->session->set_flashdata('success', 'Sukses mengajukan alat baru!');
 			redirect("event/schedule_event");

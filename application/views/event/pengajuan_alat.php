@@ -18,6 +18,7 @@
                     <div class="form-group">
                         <label for="namaAlat"><b>Event</b></label>
                         <select class="form-control col-5" name="kodeEvent" id="kodeEvent">
+                            <option value="">--Choose Event--</option>
                             <?php if($data_event){ ?>
                                 <?php for($i =0; $i < count($data_event);$i++){ ?>
                                     <option value="<?= $data_event[$i]->kodeEvent?>"> <?= $data_event[$i]->namaEvent ?> </option>
@@ -95,6 +96,30 @@
         $("#tanggalMasuk").datepicker({
             format: 'yyyy-mm-dd'
         });
+
+        $("#kodeEvent").on("change", function(){
+            $.ajax({
+                "type": "POST",
+                "url": "http://localhost/divine/event/alat/get_alat_by_event",
+                "data": {
+                    "kodeEvent": this.value
+                }
+            }).done(function (res) {
+                console.log("res", res)
+                if(res != ""){
+                    var result = JSON.parse(res)
+
+                    if(result.length > 0){
+                        for(var i=0;i<alat.length;i++){
+                            if(!result.includes(alat[i].kodeAlat)){
+                                // console.log("alat not inc", alat[i].kodeAlat)
+                                $("#namaAlat option[value='"+alat[i].kodeAlat+"']").remove();
+                            }
+                        }
+                    }
+                }
+            })
+        })
 
         $("#namaAlat").on("change", function(){
             $('#namaAlat option').each(function() {
