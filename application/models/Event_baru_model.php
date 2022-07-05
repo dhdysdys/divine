@@ -50,6 +50,15 @@
             return $query->result();
         }
 
+        public function get_list_alat_accepted(){
+            $this->db->where(array("status"=>1));
+            $this->db->from('dataTransaksiAlatEvent');
+            $this->db->select('*');
+            $query = $this->db->get();
+
+            return $query->result();
+        }
+
         public function get_list_alat_pending($id=null){
             if(!empty($id)){
                 $this->db->where('id', $id);

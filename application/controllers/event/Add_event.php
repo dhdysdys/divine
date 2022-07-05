@@ -32,7 +32,19 @@ class Add_event extends CI_Controller {
 		if(!$this->session->userdata('email')){
 			redirect("auth");
 		}else{
-			$data["alat"] = $this->inventaris_model->get_available();
+			$listAlat = array();
+			$alat = $this->inventaris_model->get_available();
+
+			$check_list_alat_event = $this->event_baru_model->get_list_alat_accepted();
+			$kodeAlatEventAccepted = array_column($check_list_alat_event, 'kodeAlat');
+			
+			foreach($alat as $list){
+				if(!in_array($list->kodeAlat,$kodeAlatEventAccepted)){
+					array_push($listAlat, $list);
+				}
+			}
+			
+			$data["alat"] = $listAlat;
 			$this->load->view('event/add_event', $data);
 		}
 	}
