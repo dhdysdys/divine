@@ -37,7 +37,7 @@ class Schedule_event extends CI_Controller {
 			$check_event =  $this->event_baru_model->get();
 			$today = date('Y-m-d');
 			foreach($check_event as $list){
-				if(date_format(date_create($list->tanggalWaktuMulaiEvent),"Y-m-d") >= $today || date_format(date_create($list->tanggalWaktuSelesaiEvent),"Y-m-d") <= $today){
+				if( $today  >= date('Y-m-d', strtotime($list->tanggalWaktuMulaiEvent)) &&  $today <= date('Y-m-d', strtotime($list->tanggalWaktuSelesaiEvent)) ){
 					$get_list = $this->event_baru_model->get_list_alat($list->kodeEvent);
 
 					if($get_list){
@@ -49,8 +49,8 @@ class Schedule_event extends CI_Controller {
 							$this->inventaris_model->edit_alat($array_update, $get_list[$i]->kodeAlat);
 						}
 					}
-				}else if(date_format(date_create($list->tanggalWaktuMulaiEvent),"Y-m-d") < $today || date_format(date_create($list->tanggalWaktuSelesaiEvent),"Y-m-d") > $today){
-					$get_list = $this->event_baru_model->get_list_alat($id);
+				}else{
+					$get_list = $this->event_baru_model->get_list_alat($list->kodeEvent);
 
 					if($get_list){
 						for($i=0;$i<count($get_list);$i++){
@@ -61,6 +61,8 @@ class Schedule_event extends CI_Controller {
 							$this->inventaris_model->edit_alat($array_update, $get_list[$i]->kodeAlat);
 						}
 					}
+
+					
 				}
 			}
 			

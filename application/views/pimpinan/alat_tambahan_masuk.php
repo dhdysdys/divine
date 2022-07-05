@@ -41,7 +41,7 @@
                                         <td class="text-center">Rp. <?= $data[$i]->hargaAlat ?></td>
                                         <td><?= $data[$i]->namaEvent ?></td>
                                         <td class="text-center">
-                                            <?php if($data[$i]->status == 0){ ?>
+                                            <?php if($data[$i]->status == 3){ ?>
                                                 <a href="<?php echo base_url('pimpinan/alat_tambahan_masuk/accept/'.$data[$i]->id); ?>" class="btn btn-success">Accept</a>
                                                 <a href="<?php echo base_url('pimpinan/alat_tambahan_masuk/reject/'.$data[$i]->id); ?>" class="btn btn-danger">Reject</a>
                                             <?php }else{ ?>

@@ -53,7 +53,8 @@ class Alat extends CI_Controller {
 			for($i =0; $i< sizeof($alat);$i++){
 				$array_insert_alat = array(
 					"kodeEvent" => $kodeEVent,
-					"kodeAlat" => $kodeAlat[$i]
+					"kodeAlat" => $kodeAlat[$i],
+					"status" => 3
 				);
 
 				$this->event_baru_model->add_alat_event($array_insert_alat);

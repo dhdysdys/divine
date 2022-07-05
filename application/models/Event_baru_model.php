@@ -54,7 +54,7 @@
             if(!empty($id)){
                 $this->db->where('id', $id);
             }else{
-                $this->db->where(array("status"=>0));
+                $this->db->where(array("status"=>3));
             }
             
             $this->db->from('dataTransaksiAlatEvent');

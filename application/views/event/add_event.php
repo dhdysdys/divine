@@ -215,7 +215,7 @@
                 if(this.selected){
                     if(alat.length > 0){
                         for(var i=0;i<alat.length;i++){
-                            if(alat[i].namaAlat == this.text){
+                            if(alat[i].namaAlat == this.text && alat[i].kodeAlat == this.value ){
                                 $("#hargaAlat").val("Rp. "+alat[i].hargaRetail)
                             }
                         }
