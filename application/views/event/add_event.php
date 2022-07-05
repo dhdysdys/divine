@@ -193,16 +193,19 @@
                     $("#tanggalSelesai").change().val(end_date)
                 }
               
+                if(durasi > 1){
+                    rowCount = $('#waktuEvent tr').length;
+                    var rowCount = rowCount - 1
+                    var row = durasi - rowCount
 
-                rowCount = $('#waktuEvent tr').length;
-                var rowCount = rowCount - 1
-                var row = durasi - rowCount
-
-                console.log("row", row)
-                for(var i=0;i<=row;i++){
-                    $("#waktuEvent").find('tbody').append('<tr><td ><div class="form-row justify-content-center"><input type="number" min="0" max="23" name="jamEventMulai[]" id="jamEventMulai" class="form-control" placeholder="hh" style="width:65px;"><input type="number" min="0" max="59" name="menitEventMulai[]" id="menitEventMulai" class="form-control" placeholder="mm" style="width:65px; margin-left:10px;"></div></td><td><div class="form-row justify-content-center"><input type="number" min="0" max="23" name="jamEventSelesai[]" id="jamEventSelesai" class="form-control" placeholder="hh" style="width:65px;"><input type="number" min="0" max="59" name="menitEventSelesai[]" id="menitEventSelesai" class="form-control" placeholder="mm" style="width:65px; margin-left:10px;"></div></td></tr>');
-                    i++
+                    console.log("row", row)
+                    for(var i=0;i<=row;i++){
+                        $("#waktuEvent").find('tbody').append('<tr><td ><div class="form-row justify-content-center"><input type="number" min="0" max="23" name="jamEventMulai[]" id="jamEventMulai" class="form-control" placeholder="hh" style="width:65px;"><input type="number" min="0" max="59" name="menitEventMulai[]" id="menitEventMulai" class="form-control" placeholder="mm" style="width:65px; margin-left:10px;"></div></td><td><div class="form-row justify-content-center"><input type="number" min="0" max="23" name="jamEventSelesai[]" id="jamEventSelesai" class="form-control" placeholder="hh" style="width:65px;"><input type="number" min="0" max="59" name="menitEventSelesai[]" id="menitEventSelesai" class="form-control" placeholder="mm" style="width:65px; margin-left:10px;"></div></td></tr>');
+                        i++
+                    }
                 }
+
+               
                 
             }
         })
