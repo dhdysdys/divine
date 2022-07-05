@@ -40,52 +40,68 @@ class Alat extends CI_Controller {
 			$flag = 0;
 			$flagRest = 0;
 
-			foreach($pengajuan as $list){
-				for($i=0;$i<count($alat);$i++){
-					if($list->namaAlat == $alat[$i]->namaAlat){
-						$temp = (object) [
-							"kodeAlat" => $alat[$i]->kodeAlat,
-							"namaAlat" => $alat[$i]->namaAlat,
-							"tanggalAlatMasuk" => $alat[$i]->tanggalAlatMasuk,
-							"statusAlat" => $alat[$i]->statusAlat
-						];
-						array_push($listAlat, $temp);
-						array_push($listPengajuan, $alat[$i]->namaAlat);
-						$flag = 0;
-					}else{
-						$flag = 1;
-						$flagRest = 1;	
+			if(sizeof($pengajuan) != 0){
+				foreach($pengajuan as $list){
+					for($i=0;$i<count($alat);$i++){
+						if($list->namaAlat == $alat[$i]->namaAlat){
+							$temp = (object) [
+								"kodeAlat" => $alat[$i]->kodeAlat,
+								"namaAlat" => $alat[$i]->namaAlat,
+								"tanggalAlatMasuk" => $alat[$i]->tanggalAlatMasuk,
+								"statusAlat" => $alat[$i]->statusAlat
+							];
+							array_push($listAlat, $temp);
+							array_push($listPengajuan, $alat[$i]->namaAlat);
+							$flag = 0;
+						}else{
+							$flag = 1;
+							$flagRest = 1;	
+						}
+					}
+	
+					if($flag == 1){
+						
+						if($list->status == 2){
+							$temp = (object)[
+								"kodeAlat" => "-",
+								"namaAlat" => $list->namaAlat,
+								"tanggalAlatMasuk" => $list->created,
+								"statusAlat" => 5
+							];
+							array_push($listAlat, $temp);
+							$flag = 0;
+							array_push($listPengajuan, $list->namaAlat);
+						}
 					}
 				}
-
-				if($flag == 1){
-					if($list->status == 2){
-						$temp = (object)[
-							"kodeAlat" => "-",
-							"namaAlat" => $list->namaAlat,
-							"tanggalAlatMasuk" => $list->created,
-							"statusAlat" => 5
-						];
-						array_push($listAlat, $temp);
-						$flag = 0;
-						array_push($listPengajuan, $list->namaAlat);
+	
+				
+				if($flagRest == 1){
+					for($i=0;$i<count($alat);$i++){
+						if(!in_array($alat[$i]->namaAlat, $listPengajuan)){
+							$temp = (object) [
+								"kodeAlat" => $alat[$i]->kodeAlat,
+								"namaAlat" => $alat[$i]->namaAlat,
+								"tanggalAlatMasuk" => $alat[$i]->tanggalAlatMasuk,
+								"statusAlat" => $alat[$i]->statusAlat
+							];
+							array_push($listAlat, $temp);
+						}
 					}
+				}
+			}else{
+				for($i=0;$i<count($alat);$i++){
+					$temp = (object) [
+						"kodeAlat" => $alat[$i]->kodeAlat,
+						"namaAlat" => $alat[$i]->namaAlat,
+						"tanggalAlatMasuk" => $alat[$i]->tanggalAlatMasuk,
+						"statusAlat" => $alat[$i]->statusAlat
+					];
+					array_push($listAlat, $temp);
 				}
 			}
 
-			if($flagRest == 1){
-				for($i=0;$i<count($alat);$i++){
-					if(!in_array($alat[$i]->namaAlat, $listPengajuan)){
-						$temp = (object) [
-							"kodeAlat" => $alat[$i]->kodeAlat,
-							"namaAlat" => $alat[$i]->namaAlat,
-							"tanggalAlatMasuk" => $alat[$i]->tanggalAlatMasuk,
-							"statusAlat" => $alat[$i]->statusAlat
-						];
-						array_push($listAlat, $temp);
-					}
-				}
-			}
+			
 
             $data["data"] = $listAlat;
 			$this->load->view('inventaris/inventaris_alat', $data);
