@@ -182,6 +182,29 @@
 
 
                         $("#tanggalSelesai").change().val(end_date)
+
+                        $.ajax({
+                            "type": "POST",
+                            "url": "http://localhost/divine/event/add_event/get_alat_by_date",
+                            "data": {
+                                "tanggalMulai": $("#tanggalMulai").val(),
+                                "tanggalSelesai": $("#tanggalSelesai").val()
+                            }
+                        }).done(function (res) {
+                            // console.log("res", res)
+                            if(res != ""){
+                                var result = JSON.parse(res)
+
+                                if(result.length > 0){
+                                    for(var i=0;i<alat.length;i++){
+                                        if(!result.includes(alat[i].kodeAlat)){
+                                            // console.log("alat not inc", alat[i].kodeAlat)
+                                            $("#namaAlat option[value='"+alat[i].kodeAlat+"']").remove();
+                                        }
+                                    }
+                                }
+                            }
+                        })
                     })
                 }else{
                     var [year, month, day] = get_tanggal_mulai.split("-")
@@ -191,6 +214,29 @@
                     var end_date = new Date(get_end_date).toISOString().split('T')[0] 
 
                     $("#tanggalSelesai").change().val(end_date)
+
+                    $.ajax({
+                        "type": "POST",
+                        "url": "http://localhost/divine/event/add_event/get_alat_by_date",
+                        "data": {
+                            "tanggalMulai": $("#tanggalMulai").val(),
+                            "tanggalSelesai": $("#tanggalSelesai").val()
+                        }
+                    }).done(function (res) {
+                        // console.log("res", res)
+                        if(res != ""){
+                            var result = JSON.parse(res)
+
+                            if(result.length > 0){
+                                for(var i=0;i<alat.length;i++){
+                                    if(!result.includes(alat[i].kodeAlat)){
+                                        // console.log("alat not inc", alat[i].kodeAlat)
+                                        $("#namaAlat option[value='"+alat[i].kodeAlat+"']").remove();
+                                    }
+                                }
+                            }
+                        }
+                    })
                 }
               
                 if(durasi > 1){

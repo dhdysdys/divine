@@ -33,20 +33,46 @@ class Add_event extends CI_Controller {
 			redirect("auth");
 		}else{
 			$listAlat = array();
-			$alat = $this->inventaris_model->get_available();
-
-			$check_list_alat_event = $this->event_baru_model->get_list_alat_accepted();
-			$kodeAlatEventAccepted = array_column($check_list_alat_event, 'kodeAlat');
-			
-			foreach($alat as $list){
-				if(!in_array($list->kodeAlat,$kodeAlatEventAccepted)){
-					array_push($listAlat, $list);
-				}
-			}
-			
-			$data["alat"] = $listAlat;
+			$data["alat"] = $this->inventaris_model->get_available();
 			$this->load->view('event/add_event', $data);
 		}
+	}
+
+	public function get_alat_by_date(){
+		$start_date = $this->input->post("tanggalMulai");
+		$end_date = $this->input->post("tanggalSelesai");
+
+		$startDate = "CAST('".$start_date."' AS DATETIME)";
+		$endDate = " CAST('".$end_date."' AS DATETIME)";
+
+		$where_event = " tanggalWaktuMulaiEvent >= ".$startDate." AND tanggalWaktuSelesaiEvent <= ".$endDate. "";
+
+		$get_list_event = $this->event_baru_model->get_list_event($where_event);
+		$get_alat = $this->inventaris_model->get_available();
+
+		$list_alat_event = array();
+		$list_array_fix = array();
+		$kodeAlatTr = array();
+
+		foreach($get_list_event as $list){
+			$get_alat_tr = $this->event_baru_model->get_list_alat($list->kodeEvent);
+			$get_kode_alat = array_column($get_alat_tr, 'kodeAlat');
+
+			foreach($get_alat_tr as $list2){
+				array_push($list_alat_event, $list2->kodeAlat);
+			}
+			
+		}
+		
+		$kodeAlatTr = $list_alat_event;
+
+		foreach($get_alat as $list){
+			if(!in_array($list->kodeAlat,$kodeAlatTr)){
+				array_push($list_array_fix, $list->kodeAlat);
+			}
+		}
+		
+		echo json_encode($list_array_fix);
 	}
 
 	public function submit(){
