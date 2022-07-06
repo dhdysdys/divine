@@ -168,10 +168,10 @@
             reject()
         })
 
-        // $(".data").on("click", function(e){
-        //     const dataEl = e.target;
-        //     $("#kodeEvent").val(dataEl.dataset.id)
-        // })
+        $(".data").on("click", function(e){
+            const dataEl = e.target;
+            $("#kodeEvent").val(dataEl.dataset.id)
+        })
 
         // $(".dataAlat").on("click", function(e){
         //     const dataEl = e.target;
