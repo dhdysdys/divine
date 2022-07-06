@@ -55,11 +55,10 @@
                                                 <a href="<?php echo base_url('inventaris/alat/input_alat/'.$data[$i]->kodeAlat); ?>" class="btn btn-secondary">Edit</a>
                                                 <a onclick="return confirm(' Apakah anda yakin untuk menghapus data?')" href="<?php echo base_url('inventaris/alat/delete/'.$data[$i]->kodeAlat); ?>" class="btn btn-danger">Delete</a>
                                             <?php }else{ ?>
-                                                <button  class="btn btn-warning dataNote"  data-toggle="modal" data-target="#noteModal" data-note="<?= isset($data[$i]->alasan)?$data[$i]->alasan:""?>">
+                                                <button id="btnNote" class="btn btn-warning dataNote"  data-toggle="modal" data-target="#noteModal" data-id="<?= $data[$i]->namaAlat?>">
                                                     Note
                                                 </button>
                                             <?php } ?>
-                                           
                                         </td>
                                     </tr>
                                 <?php } ?>        
@@ -84,6 +83,7 @@
                     <div class="form-group">
                         <label for="inputBobot" class="col-sm-6 col-form-label">Alasan reject alat</label>
                         <div class="col-sm-12">
+                            <input type="hidden" id="namaalat" name="namaalat">
                             <textarea name="alasanNote" id="alasanNote" cols="30" rows="3" class="form-control" readonly></textarea>
                         </div>
                     </div>
@@ -99,31 +99,49 @@
             order: [0, "desc"]
         });
 
-        $(".dataNote").on("click", function(e){
-            const dataEl = e.target;
-            $("#alasanNote").val(dataEl.dataset.note)
+        $("#btnNote").on("click", function(event){
+            var dataEl= event.target
+            $("#namaalat").val(dataEl.dataset.id)
+            get_note()
         })
+
+        // $(".dataNote").on("click", function(e){
+        //     const dataEl = e.target;
+        //     $("#alasanNote").val(dataEl.dataset.note)
+        // })
+        
+        // $("#nodetBtn").on("click", function(e){
+        //     var dataEl = e.target
+
+        //     console.log(dataEl.dataset.id)
+        // })
         
 
-        $("#nodetBtn").on("click", function(e){
-            console.log("clicked")
-            var dataEl = e.target
-
-            console.log(dataEl.dataset.id)
-        })
-
-        $(".data").on("click", function(e){
-            const dataEl = e.target;
-            console.log(dataEl.dataset.id)
-            $.ajax({
-                "type": "POST",
-                "url": "http://localhost/divine/inventaris/alat/get_note",
-                "data": {
-                    "namaAlat": dataEl.dataset.id,
-                }
-            }).done(function (res) {
-                $("#alasanNote").val(res)
-            })
-        })
+        // $(".data").on("click", function(e){
+        //     const dataEl = e.target;
+        //     console.log(dataEl.dataset.id)
+        //     $.ajax({
+        //         "type": "POST",
+        //         "url": "http://localhost/divine/inventaris/alat/get_note",
+        //         "data": {
+        //             "namaAlat": dataEl.dataset.id,
+        //         }
+        //     }).done(function (res) {
+        //         $("#alasanNote").val(res)
+        //     })
+        // })
     } );
+
+    function get_note(){
+        console.log($("#namaalat").val())
+        $.ajax({
+            "type": "POST",
+            "url": "http://localhost/divine/inventaris/alat/get_note",
+            "data": {
+                "namaAlat": $("#namaalat").val(),
+            }
+        }).done(function (res) {
+            $("#alasanNote").val(res)
+        })
+    }
 </script>
