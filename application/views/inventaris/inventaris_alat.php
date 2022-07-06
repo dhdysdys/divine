@@ -55,7 +55,9 @@
                                                 <a href="<?php echo base_url('inventaris/alat/input_alat/'.$data[$i]->kodeAlat); ?>" class="btn btn-secondary">Edit</a>
                                                 <a onclick="return confirm(' Apakah anda yakin untuk menghapus data?')" href="<?php echo base_url('inventaris/alat/delete/'.$data[$i]->kodeAlat); ?>" class="btn btn-danger">Delete</a>
                                             <?php }else{ ?>
-                                                <a  id="nodetBtn" data-toggle="modal" data-target="#noteModal" data-id="<?= $data[$i]->namaAlat?>" class="btn btn-warning data">Note</a>
+                                                <button  class="btn btn-warning dataNote"  data-toggle="modal" data-target="#noteModal" data-note="<?= isset($data[$i]->alasan)?$data[$i]->alasan:""?>">
+                                                    Note
+                                                </button>
                                             <?php } ?>
                                            
                                         </td>
@@ -97,8 +99,22 @@
             order: [0, "desc"]
         });
 
+        $(".dataNote").on("click", function(e){
+            const dataEl = e.target;
+            $("#alasanNote").val(dataEl.dataset.note)
+        })
+        
+
+        $("#nodetBtn").on("click", function(e){
+            console.log("clicked")
+            var dataEl = e.target
+
+            console.log(dataEl.dataset.id)
+        })
+
         $(".data").on("click", function(e){
             const dataEl = e.target;
+            console.log(dataEl.dataset.id)
             $.ajax({
                 "type": "POST",
                 "url": "http://localhost/divine/inventaris/alat/get_note",

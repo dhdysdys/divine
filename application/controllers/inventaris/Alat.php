@@ -66,7 +66,8 @@ class Alat extends CI_Controller {
 								"kodeAlat" => "-",
 								"namaAlat" => $list->namaAlat,
 								"tanggalAlatMasuk" => $list->created,
-								"statusAlat" => 5
+								"statusAlat" => 5,
+								"alasan" => $list->alasanReject,
 							];
 							array_push($listAlat, $temp);
 							$flag = 0;
