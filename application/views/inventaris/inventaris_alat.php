@@ -55,9 +55,10 @@
                                                 <a href="<?php echo base_url('inventaris/alat/input_alat/'.$data[$i]->kodeAlat); ?>" class="btn btn-secondary">Edit</a>
                                                 <a onclick="return confirm(' Apakah anda yakin untuk menghapus data?')" href="<?php echo base_url('inventaris/alat/delete/'.$data[$i]->kodeAlat); ?>" class="btn btn-danger">Delete</a>
                                             <?php }else{ ?>
-                                                <button id="btnNote" class="btn btn-warning dataNote"  data-toggle="modal" data-target="#noteModal" data-id="<?= $data[$i]->namaAlat?>">
+                                                <p style="word-wrap: break-word; width:250px;"><?= $data[$i]->alasan?></p>
+                                                <!-- <button id="btnNote" class="btn btn-warning dataNote"  data-toggle="modal" data-target="#noteModal" data-id="<?= $data[$i]->namaAlat?>">
                                                     Note
-                                                </button>
+                                                </button> -->
                                             <?php } ?>
                                         </td>
                                     </tr>
