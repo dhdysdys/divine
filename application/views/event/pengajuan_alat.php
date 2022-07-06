@@ -77,9 +77,12 @@
     
     if(alat.length > 0){
         for(var i=0;i<alat.length;i++){
-            var o = new Option(alat[i].namaAlat, alat[i].kodeAlat);
-            $(o).html(alat[i].namaAlat);
-            $("#namaAlat").append(o);
+            if(alat[i].statusAlat != 4){
+                var o = new Option(alat[i].namaAlat, alat[i].kodeAlat);
+                $(o).html(alat[i].namaAlat);
+                $("#namaAlat").append(o);
+            }
+          
         }
     }
 
@@ -111,7 +114,7 @@
 
                     if(result.length > 0){
                         for(var i=0;i<alat.length;i++){
-                            if(!result.includes(alat[i].kodeAlat)){
+                            if(!result.includes(alat[i].kodeAlat) && alat[i].statusAlat != 4){
                                 // console.log("alat not inc", alat[i].kodeAlat)
                                 $("#namaAlat option[value='"+alat[i].kodeAlat+"']").remove();
                             }
