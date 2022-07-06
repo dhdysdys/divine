@@ -288,6 +288,7 @@ class Report extends CI_Controller {
 			$pdf->Cell($w[2],7,$row->namaAlat,1,0,'L',true);
 			$pdf->Cell($w[3],7,$row->status,1,0,'C',true);
 			$pdf->Ln();
+			$pdf->Cell(10);
 			$totalRow++;
 		}
 		$pdf->SetFillColor(255);
