@@ -111,7 +111,7 @@ class Alat extends CI_Controller {
 				$this->event_baru_model->add_alat_event($array_insert_alat);
 			}
 
-			$this->event_baru_model->edit_status(array("totalHarga"=>$totalFix), $kodeEVent);
+			// $this->event_baru_model->edit_status(array("totalHarga"=>$totalFix), $kodeEVent);
 
 			$this->session->set_flashdata('success', 'Sukses mengajukan alat baru!');
 			redirect("event/schedule_event");

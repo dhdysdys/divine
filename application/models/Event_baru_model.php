@@ -50,7 +50,8 @@
             return $query->result();
         }
 
-        public function get_list_alat_accepted(){
+        public function get_list_alat_accepted($id){
+            if(!empty($id)) $this->db->where(array('kodeEvent'=>$id));
             $this->db->where(array("status"=>1));
             $this->db->from('dataTransaksiAlatEvent');
             $this->db->select('*');

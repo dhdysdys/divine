@@ -59,7 +59,7 @@ class Event_masuk extends CI_Controller {
 		$data = array();
 		$alat = array();
 
-		$get_list = $this->event_baru_model->get_list_alat($id);
+		$get_list = $this->event_baru_model->get_list_alat_accepted($id);
 		$get_nama_event = $this->event_baru_model->get($id);
 
 		$no = 1;
@@ -164,8 +164,6 @@ class Event_masuk extends CI_Controller {
 					$this->event_baru_model->edit_status_alat($array_update_status_alat, array("kodeEvent"=>$id, "kodeAlat"=>$alat[$i]->kodeAlat,"status"=>0));
 				}
 			}
-
-			
 
 			$this->event_baru_model->edit_status($data, $id);
 

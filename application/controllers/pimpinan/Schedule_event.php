@@ -58,7 +58,7 @@ class Schedule_event extends CI_Controller {
 		$data = array();
 		$alat = array();
 
-		$get_list = $this->event_baru_model->get_list_alat($id);
+		$get_list = $this->event_baru_model->get_list_alat_accepted($id);
 		$get_nama_event = $this->event_baru_model->get($id);
 
 		$no = 1;

@@ -37,20 +37,26 @@ class Alat_tambahan_masuk extends CI_Controller {
             $list = array();
            
             foreach($alat as $l){
-                $get_event = $this->event_baru_model->get($l->kodeEvent)[0];
-                $get_harga = $this->inventaris_model->get($l->kodeAlat)[0];
+                $get_event = $this->event_baru_model->get($l->kodeEvent);
+                $get_harga = $this->inventaris_model->get($l->kodeAlat);
 
-				$temp = (object) [
-					"namaAlat" => $get_harga->namaAlat,
-					"hargaAlat" => $get_harga->hargaRetail,
-					"namaEvent" => $get_event->namaEvent,
-					"status" => $l->status,
-					"kodeEvent" => $l->kodeEvent,
-					"kodeAlat" => $l->kodeAlat,
-					"id"=> $l->id
-				];
-
-				array_push($list, $temp);
+				if(count($get_event) > 0 && count($get_harga) > 0){
+					$get_event = $get_event[0];
+					$get_harga = $get_harga[0];
+	
+					$temp = (object) [
+						"namaAlat" => $get_harga->namaAlat,
+						"hargaAlat" => $get_harga->hargaRetail,
+						"namaEvent" => $get_event->namaEvent,
+						"status" => $l->status,
+						"kodeEvent" => $l->kodeEvent,
+						"kodeAlat" => $l->kodeAlat,
+						"id"=> $l->id
+					];
+	
+					array_push($list, $temp);
+				}
+			
             }
 
 			$data["data"] = $list;
@@ -71,6 +77,10 @@ class Alat_tambahan_masuk extends CI_Controller {
 				"status" => 1
 			);
 
+			$get_event = $this->event_baru_model->get($get[0]->kodeEvent);
+			$fix_total_harga = intval($get_event[0]->totalHarga) + intval($get_nama_alat->hargaRetail);
+
+			$this->event_baru_model->edit_status(array("totalHarga"=>$fix_total_harga), $get[0]->kodeEvent);
 			$this->event_baru_model->edit_status_alat($array_update_status_alat, array("id" => $id));
 			$this->inventaris_model->edit_alat($array_update_status, $get[0]->kodeAlat);
 
@@ -91,6 +101,11 @@ class Alat_tambahan_masuk extends CI_Controller {
 				"status" => 2
 			);
 
+			$get_event = $this->event_baru_model->get($get[0]->kodeEvent);
+			$fix_total_harga = intval($get_event[0]->totalHarga) - intval($get_nama_alat->hargaRetail);
+
+
+			$this->event_baru_model->edit_status(array("totalHarga" => $fix_total_harga), $get[0]->kodeEvent);
 			$this->event_baru_model->edit_status_alat($array_update_status_alat, array("id" => $id));
 			
 			$this->session->set_flashdata('success',  'Alat '.$get_nama_alat->namaAlat.' telah direject!');
