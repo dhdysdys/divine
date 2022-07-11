@@ -43,7 +43,7 @@
                                         <td class="text-center">
                                             <?php if($data[$i]->status == 0){ ?>
                                                 <a href="<?php echo base_url('pimpinan/alat_masuk/accept/'.$data[$i]->kodeAlat); ?>" class="btn btn-success">Accept</a>
-                                                <a  id="rejectBtn" data-toggle="modal" data-target="#rejectModal" data-id="<?= $data[$i]->kodeAlat?>" class="btn btn-danger data">Reject</a>
+                                                <a  id="rejectBtn" data-toggle="modal" data-target="#rejectModal" data-id="<?= $data[$i]->kodeAlat?>" class="btn btn-danger data">Reject <input type="hidden" name="kodeAlat" id="kodeAlat" value="<?= $data[$i]->kodeAlat?>"></a>
                                             <?php }else{ ?>
                                                 <?php if($data[$i]->status == 1){?> 
                                                     <p style="color:green;font-weight:bold;font-size:1rem;">Accepted</p>
@@ -74,10 +74,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="kodeAlat" id="kodeAlat">
+                    <!-- <input type="hidden" name="kodeAlat" id="kodeAlat"> -->
                     <div class="form-group">
                         <label for="inputBobot" class="col-sm-6 col-form-label">Alasan reject alat</label>
                         <div class="col-sm-12">
+
                             <textarea name="alasan" id="alasan" cols="30" rows="3" class="form-control"></textarea>
                         </div>
                     </div>
@@ -123,9 +124,8 @@
             reject()
         })
 
-        $(".data").on("click", function(e){
-            const dataEl = e.target;
-            $("#kodeAlat").val(dataEl.dataset.id)
+        $(".data").on("click", function(eve){
+            $("#kodeAlat").val(eve.target.getAttribute("data-id"))
         })
 
         $(".dataNote").on("click", function(e){
