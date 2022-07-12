@@ -50,6 +50,7 @@
                             <tr>
                                 <th class="text-center" >ID</th>
                                 <th class="text-center" >Nama Event</th>
+                                <th class="text-center" >Lokasi</th>
                                 <th class="text-center" >Rundown</th>
                                 <th class="text-center" >Peralatan</th>
                                 <th class="text-center"> Total</th>
@@ -181,6 +182,7 @@
                             className: 'text-center',
                         },
                         {data:"namaEvent"},
+                        {data:"lokasi"},
                         {
                             data:"rundownEvent",
                             orderable:false,

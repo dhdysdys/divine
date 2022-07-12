@@ -67,6 +67,7 @@ class Report extends CI_Controller {
 			$temp = (object)[
 				"id" => $list->kodeEvent,
 				"namaEvent"	=> $list->namaEvent,
+				"lokasi" => $list->lokasiEvent,
 				"rundownEvent" => urlencode($list->rundownEvent),
 				"kodeEvent" => $list->kodeEvent,
 				"totalHarga" => $list->totalHarga,
