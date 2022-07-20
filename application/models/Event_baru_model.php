@@ -104,4 +104,13 @@
 
             return $query->result();
         }
+
+        public function get_total_alat($where){
+            $this->db->where($where);
+            $this->db->from('dataAlat');
+            $this->db->select('COUNT(*) AS "jumlah"');
+            $query = $this->db->get();
+
+            return $query->result();
+        }
     }

@@ -82,9 +82,11 @@
                     <table id="tb_alat" class="table table-secondary" style="width:100%;display:none">
                         <thead>
                             <tr>
-                                <th class="text-center" >ID</th>
+                                <th class="text-center" >No.</th>
                                 <th class="text-center" >Nama Alat</th>
-                                <th class="text-center" >Harga Alat</th>
+                                <th class="text-center" >Jumlah Alat</th>
+                                <th class="text-center" >Action</th>
+                                <!-- <th class="text-center" >Harga Alat</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -237,18 +239,20 @@
                     },
                     "columns":[
                         {
-                            data:"id",
+                            data:"no",
                             className: 'text-center',
                         },
                         {data:"namaAlat"},
+                        {data:"jumlah"},
                         {
-                            data:"hargaAlat",
+                            data:"namaAlat",
+                            className: 'text-center',
                             orderable:false,
                             searchable:false,
                             render: function(row,type,full,meta){
                                 $("#totalAlat").val(full["totalAlat"])
                                 $("#totalPengeluaran").val("Rp. " + full["totalHargaAll"])
-                                return  'Rp. ' + row
+                                return '<a href="http://localhost/divine/pimpinan/report/detail_alat/' + full["namaAlat"] +'/'+start_date+'/'+end_date+'" class="btn btn-secondary">Details</a>'
                             }
                         },
                     ]

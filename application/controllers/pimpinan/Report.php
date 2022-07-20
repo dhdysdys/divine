@@ -88,6 +88,53 @@ class Report extends CI_Controller {
 		echo json_encode($output);
 	}
 
+	// public function get_alat_report(){
+	// 	$start_date = $this->input->post("start_date");
+	// 	$end_date = $this->input->post("end_date");
+
+	// 	$data = array();
+	// 	$totalHarga = 0;
+	// 	$totalAlat = 0;
+	// 	$curr_alat = [];
+	// 	$curr_harga = [];
+
+	// 	$startDate = "CAST('".$start_date."' AS DATETIME)";
+	// 	$endDate = "CAST('".$end_date."' AS DATETIME)";
+
+	// 	$where = "tanggalAlatMasuk >= ".$startDate." AND tanggalAlatMasuk <=".$endDate;
+
+	// 	$get_alat = $this->inventaris_model->get_list_alat($where);
+
+	// 	foreach($get_alat as $list){
+	// 		array_push($curr_alat, $list->kodeAlat);
+	// 		array_push($curr_harga, $list->hargaAlat);
+	// 	}
+
+	// 	$totalAlat = sizeof($curr_alat);
+	// 	$totalHarga = array_sum($curr_harga);
+
+	// 	foreach($get_alat as $list){
+	// 		$temp = (object)[
+	// 			"id" => $list->kodeAlat,
+	// 			"namaAlat"	=> $list->namaAlat,
+	// 			"hargaAlat" => $list->hargaAlat,
+	// 			"totalAlat" => $totalAlat,
+	// 			"totalHargaAll" => $totalHarga
+	// 		];
+
+	// 		array_push($data, $temp);
+	// 	}
+
+	// 	$output = array(
+	// 		"draw" => $this->input->post("draw"),
+	// 		"recordsTotal" => sizeof($get_alat),
+	// 		"recordsFiltered" => sizeof($get_alat),
+	// 		"data" => $data
+	// 	);
+		
+	// 	echo json_encode($output);
+	// }
+
 	public function get_alat_report(){
 		$start_date = $this->input->post("start_date");
 		$end_date = $this->input->post("end_date");
@@ -97,6 +144,7 @@ class Report extends CI_Controller {
 		$totalAlat = 0;
 		$curr_alat = [];
 		$curr_harga = [];
+		$tempAlat = [];
 
 		$startDate = "CAST('".$start_date."' AS DATETIME)";
 		$endDate = "CAST('".$end_date."' AS DATETIME)";
@@ -108,20 +156,28 @@ class Report extends CI_Controller {
 		foreach($get_alat as $list){
 			array_push($curr_alat, $list->kodeAlat);
 			array_push($curr_harga, $list->hargaAlat);
+			array_push($tempAlat, $list->namaAlat);
 		}
 
 		$totalAlat = sizeof($curr_alat);
 		$totalHarga = array_sum($curr_harga);
 
-		foreach($get_alat as $list){
+		$result = array_unique($tempAlat);
+
+		$no = 1;
+		foreach($result as $list){
+			$where2 = "namaAlat = '".$list."' AND tanggalAlatMasuk >= ".$startDate." AND tanggalAlatMasuk <=".$endDate;
+			$get_data = $this->event_baru_model->get_total_alat($where2);
+
 			$temp = (object)[
-				"id" => $list->kodeAlat,
-				"namaAlat"	=> $list->namaAlat,
-				"hargaAlat" => $list->hargaAlat,
+				// "id" => $list->kodeAlat,
+				"no" => $no,
+				"namaAlat"	=> $list,
+				"jumlah" => $get_data[0]->jumlah,
 				"totalAlat" => $totalAlat,
 				"totalHargaAll" => $totalHarga
 			];
-
+			$no++;
 			array_push($data, $temp);
 		}
 
@@ -133,6 +189,48 @@ class Report extends CI_Controller {
 		);
 		
 		echo json_encode($output);
+	}
+
+	public function detail_alat($namaAlat, $start_date, $end_date){
+		if($namaAlat != NULL){
+			$nama = str_replace('%20', ' ', $namaAlat);
+
+			$startDate = "CAST('".$start_date."' AS DATETIME)";
+			$endDate = "CAST('".$end_date."' AS DATETIME)";
+
+			$where = "namaAlat = '".$nama."' AND tanggalAlatMasuk >= ".$startDate." AND tanggalAlatMasuk <=".$endDate;
+			$get_data = $this->inventaris_model->get_list_alat($where);
+
+			$dataAlat = [];
+			$totalHarga = 0;
+			$totalAlat = 0;
+			$curr_alat = [];
+			$curr_harga = [];
+
+
+			foreach($get_data as $list){
+				array_push($curr_alat, $list->kodeAlat);
+				array_push($curr_harga, $list->hargaAlat);
+			}
+	
+			$totalAlat = sizeof($curr_alat);
+			$totalHarga = array_sum($curr_harga);
+
+			foreach($get_data as $list){
+				$temp = (object)[
+					"id" => $list->kodeAlat,
+					"namaAlat"	=> $list->namaAlat,
+					"hargaAlat" => $list->hargaAlat,
+				];
+	
+				array_push($dataAlat, $temp);
+			}
+
+			$data["data"] = $dataAlat;
+			$data["totalHarga"]= $totalHarga;
+			$data["totalAlat"] = $totalAlat;
+			$this->load->view('pimpinan/detail_alat', $data);
+		}
 	}
 
 	public function get_inventaris_report($start_date, $end_date){
